@@ -3,12 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "cross-env NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.8.5",
+    "@mui/styles": "^5.8.6",
+    "classnames": "^2.3.1",
+    "countdown": "^2.6.0",
+    "http-proxy-middleware": "^2.0.6",
     "next": "12.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"

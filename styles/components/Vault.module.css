@@ -1,0 +1,47 @@
+.thin {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+.showInfo {
+    display: flex;
+    justify-content: space-between;
+    color: #F8F9FC;
+    padding: 0.875rem;
+    width: 100%;
+    font-family: Poppins;
+    background-color: #24262E;
+    border-top: 1px solid #1d2024;
+    border-bottom: 1px solid #676b70;
+
+}
+
+.showInfo .item {
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.showInfo .text {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.showInfo .btn {
+    color: white;
+    display: block;
+    min-width: 100%;
+    background-color: transparent;
+    border: 1px solid #EFAD00;
+    margin-bottom: 1rem;
+}
+
+.showInfo .btn:hover {
+    color: white;
+    background-color: #EFAD00;
+    text-decoration: none;
+}
+
+.glow {
+    text-shadow: 0 0 2px #2b002b, 0 0 10px #efad00, 0 0 5px #efad00;
+}

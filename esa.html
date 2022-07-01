@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <title> exit scamming again </title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+
+    <title>fomo3d</title>
+    
+</head>
+
+
+
+<body style="overflow-x: hidden;">
+	<button id="connect" type="button" onclick="login()">connect wallet</button>
+	<div id="round">Round: #0</div>
+	<div id="pot">Total in pot: 100BNB</div>
+	<div id="winner">Current winner: 0x0</div>
+	<div id="time">round set</div>
+	
+	<div>&nbsp;</div>
+	<div id="curkey">0.002bnb for 500 keys</div>
+	<div>select a team:</div>
+	<input type="radio" id="radio-one" name="switch-one" value="0" /><label for="radio-one">Balance</label>
+	<input type="radio" id="radio-three" name="switch-one" value="1" /><label for="radio-three">Generous</label>
+	<input type="radio" id="radio-four" name="switch-one" value="2" checked/><label for="radio-four">Greedy</label>
+	<input type="radio" id="radio-five" name="switch-one" value="3" /><label for="radio-five">Cooperate</label>
+	<input id="invite" name="invite" type="text">invite code</input>
+	<button id="buy" type="button" onclick="buy()">buy keys</button>
+	
+	<div>&nbsp;</div>
+	<div id="key">Your keys: 0</div>
+	<div id="total">Total return: 0</div>
+	<button id="settle" type="button" onclick="settle()">settle return</button>
+	<div id="claimed">Claimed return: 0</div>
+	<button id="claim" type="button" onclick="claim()">claim return</button>
+	
+	<div>&nbsp;</div>
+	<div id="invcode">Your don't have invite code</div>
+	<input id="code" name="code" type="text">Apply for invite code</input>
+	<button id="apply" type="button" onclick="apply()">apply</button>
+	
+	
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+	crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+	integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+	crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+<script>
+	let ABI = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "plyr",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			}
+		],
+		"name": "onClaim",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "plyr",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "rnd",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "keys",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "team",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "invite",
+				"type": "string"
+			}
+		],
+		"name": "onNewKey",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "rnd",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "strt",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "rest",
+				"type": "uint256"
+			}
+		],
+		"name": "onNewRound",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "plyr",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "lastRnd",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "newRnd",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			}
+		],
+		"name": "onSettle",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "TeamId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "InvCode",
+				"type": "string"
+			}
+		],
+		"name": "BuyKey",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "Claim",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "CurrentKeyNum",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "FomoPrice",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "GameRound",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "InvCode",
+				"type": "string"
+			}
+		],
+		"name": "GenerateInviteCode",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "InitialKeyNum",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "InviteCode",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "RoundInfo",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "keys",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "plyr",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "team",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "end",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "strt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "bnb",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "pot",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "share",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "next",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "progress",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "Settle",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "TeamInfo",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "potPct",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "sharePct",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "nextPct",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "UserInfo",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "invite",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "hasInvite",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "claimed",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "total",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "setRnd",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "UserKey",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
+	
+	async function switch_to_bsc(){
+		try {
+			await window.ethereum.request({ method: 'wallet_switchEthereumChain',
+                                        params:[{chainId: Web3.utils.numberToHex(97)},],
+                                }).then(console.log('switch network'));
+		} catch(e) {
+			if (e.code === 4902 || e.code === -32603){
+			await window.ethereum.request({method: 'wallet_addEthereumChain',
+			params:[{chainId: Web3.utils.numberToHex(97),
+			chainName: 'BSC testnet',
+			nativeCurrency: {name: 'tBNB', symbol: 'tBNB', decimals: 18},
+			rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
+			}]
+			});
+			await window.ethereum.request({ method: 'wallet_switchEthereumChain',
+                                        params:[{chainId: Web3.utils.numberToHex(97)},],
+                                }).then(console.log('switch network'));
+			}
+
+		}
+	}
+
+	async function login(){
+		if(window.ethereum){
+			let addr=await ethereum.request({ method: 'eth_requestAccounts' });
+			document.getElementById('connect').innerHTML = addr[0].slice(0,7) + "...." + addr[0].substring(addr[0].length-5);
+			if(ethereum.networkVersion != '97'){
+				alert("please switch to BSC testnet");
+				await switch_to_bsc();
+			}
+			await fresh_keyreturn();
+		}
+		else{
+			alert("please install MetaMask");
+		}
+	}
+	
+	async function fresh_keyreturn(){
+		const web3 = new Web3(window.ethereum);
+		let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+		let addr=await ethereum.request({ method: 'eth_requestAccounts' });
+		let game_round = await myContract.methods.GameRound().call();
+		let user_info = await myContract.methods.UserInfo(addr[0]).call();
+		let yourkey = await myContract.methods.UserKey(game_round, addr[0]).call();
+		document.getElementById('key').innerHTML = "Your keys: " + parseInt(yourkey);
+		document.getElementById('claimed').innerHTML = "Claimed return: " + parseInt(user_info.claimed) / (10**18) + "BNB";
+		if(user_info.hasInvite==true){
+			document.getElementById('invcode').innerHTML = "Your invite code: " + user_info.invite;
+		}
+		
+		var total_return = user_info.total;
+		if(user_info.setRnd != game_round){
+		for(var i = user_info.setRnd; i<= game_round; i++){
+			let round_info = await myContract.methods.RoundInfo(i).call();
+			if(round_info.keys ==0){
+				continue;
+			}
+			let keys_ = await myContract.methods.UserKey(i, addr[0]).call();
+			total_return += round_info.bnb * keys_ / round_info.keys;
+		}
+		}
+		document.getElementById('total').innerHTML = "Total return: " + parseInt(total_return) / (10**18) + "BNB";
+	}
+	
+	async function fresh_baseinfo(){
+		const web3 = new Web3(window.ethereum);
+		let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+		let game_round = await myContract.methods.GameRound().call();
+		let round_info = await myContract.methods.RoundInfo(game_round).call();
+		let cur_key = await myContract.methods.CurrentKeyNum().call();
+		document.getElementById('round').innerHTML = "Round: #" + parseInt(game_round);
+		document.getElementById('curkey').innerHTML = "0.002BNB for " + parseInt(cur_key) + " keys";
+		document.getElementById('pot').innerHTML = "Total in pot: " + parseInt(round_info.pot)/(10**18) + "BNB";
+		document.getElementById('winner').innerHTML = "Current Winner: " + round_info.plyr;
+		var now = new Date();
+		if(round_info.end > (now/1000)){
+			let rest_time = round_info.end - now / 1000;
+			let h = parseInt(rest_time / 3600);
+			let m = parseInt((rest_time - 3600*h)/60);
+			let s = parseInt(rest_time - 3600*h - 60*m);
+			document.getElementById('time').innerHTML = "Round set in: " + h + "h:" + m + "m:" + s + "s";
+		}else{
+			document.getElementById('time').innerHTML = "Round not start"
+		}
+	}
+	fresh_baseinfo();
+	var sh=setInterval(fresh_baseinfo,1000*1);
+	
+	async function buy(){
+		var team = $('input:radio[name="switch-one"]:checked').val();
+		var invite = $('input:text[name="invite"]').val();
+		if(window.ethereum){
+			let addr=await ethereum.request({ method: 'eth_requestAccounts' });
+			if(ethereum.networkVersion != '97'){
+				await switch_to_bsc();
+				return;
+            }
+            const web3 = new Web3(window.ethereum);
+            let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+            await myContract.methods.BuyKey(team, invite).send({from: addr[0],value: 2*(10**15)}); 
+            await fresh_keyreturn(); 
+		}
+		else{
+			alert("please install MetaMask");
+		}
+	}
+	
+	async function settle(){
+		if(window.ethereum){
+			let addr=await ethereum.request({ method: 'eth_requestAccounts' });
+			if(ethereum.networkVersion != '97'){
+				await switch_to_bsc();
+				return;
+            }
+            const web3 = new Web3(window.ethereum);
+            let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+            await myContract.methods.Settle().send({from: addr[0],value: 0}); 
+            await fresh_keyreturn(); 
+		}
+		else{
+			alert("please install MetaMask");
+		}
+	}
+
+	async function claim(){
+		if(window.ethereum){
+			let addr=await ethereum.request({ method: 'eth_requestAccounts' });
+			if(ethereum.networkVersion != '97'){
+				await switch_to_bsc();
+				return;
+            }
+            const web3 = new Web3(window.ethereum);
+            let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+            await myContract.methods.Claim().send({from: addr[0],value: 0}); 
+            await fresh_keyreturn(); 
+		}
+		else{
+			alert("please install MetaMask");
+		}
+	}	
+	
+	async function apply(){
+		var code = $('input:text[name="code"]').val();
+		if(window.ethereum){
+			let addr=await ethereum.request({ method: 'eth_requestAccounts' });
+			if(ethereum.networkVersion != '97'){
+				await switch_to_bsc();
+				return;
+            }
+            const web3 = new Web3(window.ethereum);
+            let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+            await myContract.methods.GenerateInviteCode(code).send({from: addr[0],value: 0}); 
+            await fresh_keyreturn(); 
+		}
+		else{
+			alert("please install MetaMask");
+		}
+	}
+
+	
+
+</script>
+    
+
+</body>
+
+
+</html>

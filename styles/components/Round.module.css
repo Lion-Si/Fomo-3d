@@ -1,0 +1,72 @@
+.thin {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+.showInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #F8F9FC;
+    padding: 0.875rem;
+    width: 100%;
+    font-family: Poppins;
+    background-color: #24262E;
+    border-top: 1px solid #1d2024;
+    border-bottom: 1px solid #676b70;
+}
+
+.showInfo .item {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.showInfo .text {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.glow {
+    text-shadow: 0 0 2px #2b002b, 0 0 10px #efad00, 0 0 5px #efad00;
+}
+
+.btnSize {
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+}
+
+.btnGold {
+    width: 100%;
+    color: white;
+    background-color: #EFAD00;
+    display: flex;
+    align-items: flex-start;
+}
+
+.btnGold:hover,
+.btnGold:focus,
+.btnGold.active {
+    transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+    background-color: #EFAD00;
+    box-shadow: 0 0 2px #2b002b, 0 0 25px #efad00, 0 0 5px #efad00;
+    text-shadow: 0 0 2px #2b002b;
+    /* color: white; */
+}
+
+.text {
+    width: 100%;
+    font-size: 80%;
+    display: flex;
+    margin: .25rem 0 1rem 0;
+    justify-content: flex-end;
+}
+
+.small {
+    width: 100%;
+    font-size: 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
