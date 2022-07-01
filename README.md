@@ -26,3 +26,6 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:8001/api/hello](http://localhost:8001/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+
+[![OSCS Status](https://www.oscs1024.com/platform/badge/Lion-Si/Fomo-3d.svg?size=large)](https://www.oscs1024.com/project/Lion-Si/Fomo-3d?ref=badge_large)
