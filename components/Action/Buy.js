@@ -10,11 +10,11 @@ import {
 import SavingsIcon from "@mui/icons-material/Savings";
 
 import { AccountCircle } from "@mui/icons-material";
-import Bnb from "/assets/bnb.png";
-import Bear from "/assets/tbear.png";
-import Bull from "/assets/tbull.png";
-import Snek from "/assets/tsnek.png";
-import Whale from "/assets/twhale.png";
+import Bnb from "../../public/assets/bnb.png";
+import Bear from "../../public/assets/tbear.png";
+import Bull from "../../public/assets/tbull.png";
+import Snek from "../../public/assets/tsnek.png";
+import Whale from "../../public/assets/twhale.png";
 import styles from "../../styles/components/Buy.module.css";
 
 import { switch_to_bsc } from "../../src/utils/Common";
@@ -174,7 +174,7 @@ const Buy = (props) => {
               className={`${styles.btnGold} ${styles.btnSize}`}
               onClick={buy}
             >
-              <img src={Bnb?.src} style={{height:"1.5rem"}}/>
+              <img src={Bnb?.src} style={{ height: "1.5rem" }} alt="" />
               发送BNB
             </Button>
           </Grid>
@@ -217,6 +217,7 @@ const Buy = (props) => {
                   />
                   <img
                     src={item.src?.src}
+                    alt=""
                     className={type == index ? styles.checked : ""}
                   />
                   <h5>{item.name}</h5>

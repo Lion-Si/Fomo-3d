@@ -29,7 +29,9 @@ const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
 
   useEffect(() => {
-    login();
+    if (document?.getElementById("connect")?.innerHTML !== "connect wallet") {
+      login();
+    }
   }, []);
 
   const handleOpenNavMenu = (event) => {

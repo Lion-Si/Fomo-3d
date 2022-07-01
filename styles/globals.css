@@ -26,7 +26,7 @@ p {
   min-height: 100%;
   width: auto;
   height: auto;
-  background-image: url("../assets/purple_bg.jpg");
+  background-image: url("../public/assets/purple_bg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
