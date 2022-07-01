@@ -1,3 +1,5 @@
+[![OSCS Status](https://www.oscs1024.com/platform/badge/Lion-Si/Fomo-3d.svg?size=small)](https://www.oscs1024.com/project/Lion-Si/Fomo-3d?ref=badge_small)
+
 ## Getting Started
 
 First, run the development server:
