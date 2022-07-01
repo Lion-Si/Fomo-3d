@@ -10,6 +10,8 @@ npm run dev
 yarn dev
 ```
 
+Then, you can generate static files in the /out folder through build:
+
 ```build
 npm run build
 # or
