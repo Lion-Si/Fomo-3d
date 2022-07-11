@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Grid,
   Box,
@@ -14,13 +15,17 @@ import { switch_to_bsc } from "../../src/utils/Common";
 import ABI from "../../public/abi.json";
 
 const Address = "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b";
-
+const usFormatterSix = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 6,
+});
 const Vault = (props) => {
+  const userInfo = useSelector((state) => state.userInfo);
+  const isConnect = useSelector((state) => state.isConnect);
+  const user_address = useSelector((state) => state.user_address);
+  const invite_code = useSelector((state) => state.invite_code);
+
   const [count, setCount] = useState(0);
   const [type, setType] = useState(0);
-
-  const [claimReturn, setClaimReturn] = useState("");
-  const [totalReturn, setTotalReturn] = useState("");
 
   const settle = async () => {
     if (window.ethereum) {
@@ -60,7 +65,13 @@ const Vault = (props) => {
     let addr = await ethereum.request({ method: "eth_requestAccounts" });
     let game_round = await myContract.methods.GameRound().call();
     let user_info = await myContract.methods.UserInfo(addr[0]).call();
-    setClaimReturn(parseInt(user_info.claimed) / 10 ** 18);
+    let yourkey = await myContract.methods.UserKey(game_round, addr[0]).call();
+    if (user_info.hasInvite == true) {
+      dispatch({
+        type: "SET_INVITE_CODE",
+        data: user_info.invite,
+      });
+    }
     var total_return = user_info.total;
     if (user_info.setRnd != game_round) {
       for (var i = user_info.setRnd; i <= game_round; i++) {
@@ -72,7 +83,15 @@ const Vault = (props) => {
         total_return += (round_info.bnb * keys_) / round_info.keys;
       }
     }
-    setTotalReturn(parseInt(total_return) / 10 ** 18);
+    dispatch({
+      type: "SET_USER_INFO",
+      data: {
+        ...userInfo,
+        claimed_return: parseInt(user_info.claimed) / 10 ** 18,
+        total_return: parseInt(total_return) / 10 ** 18,
+        key: parseInt(yourkey),
+      },
+    });
   };
 
   return (
@@ -89,7 +108,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.item}
           >
-            锁定部分
+            Locked Earnings
           </Grid>
           <Grid
             item
@@ -100,7 +119,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.text}
           >
-            0.0000 BNB
+            {usFormatterSix.format(userInfo?.total_return)} BNB
           </Grid>
           <Grid
             item
@@ -110,7 +129,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.item}
           >
-            已提现
+            Withdrawn
           </Grid>
           <Grid
             item
@@ -121,7 +140,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.text}
           >
-            {claimReturn} BNB
+            {userInfo.claimed_return} BNB
           </Grid>
           <Grid
             item
@@ -131,7 +150,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.item}
           >
-            推荐奖励
+            Invited Reward
           </Grid>
           <Grid
             item
@@ -142,7 +161,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.text}
           >
-            0.0000 BNB
+            {userInfo.key} BNB
           </Grid>
           <Box sx={{ height: "2rem", width: "100%" }}></Box>
           <Grid
@@ -153,7 +172,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.item}
           >
-            暂时总收入
+            Active Total Earnings
           </Grid>
           <Grid
             item
@@ -164,14 +183,14 @@ const Vault = (props) => {
             xs={5.5}
             className={`${styles.text} ${styles.glow}`}
           >
-            {totalReturn} BNB
+            {userInfo.total_return} BNB
           </Grid>
 
           <Button className={styles.btn} onClick={settle}>
-            确认
+            Confirm
           </Button>
           <Button className={styles.btn} onClick={claim}>
-            提现
+            Withdraw
           </Button>
         </Grid>
       </Grid>

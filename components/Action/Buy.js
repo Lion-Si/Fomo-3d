@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Grid,
   Box,
@@ -6,10 +7,11 @@ import {
   TextField,
   Button,
   Divider,
+  InputAdornment,
 } from "@mui/material";
 import SavingsIcon from "@mui/icons-material/Savings";
 
-import { AccountCircle } from "@mui/icons-material";
+import { AccountCircle, Scale } from "@mui/icons-material";
 import Bnb from "../../public/assets/bnb.png";
 import Bear from "../../public/assets/tbear.png";
 import Bull from "../../public/assets/tbull.png";
@@ -46,6 +48,11 @@ const radio_data = [
 const Address = "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b";
 
 const Buy = (props) => {
+  // 获取中央仓库中的数据(需要的时候在引入)
+  const userInfo = useSelector((state) => state.userInfo);
+  // 通信必备
+  const dispatch = useDispatch();
+
   const [count, setCount] = useState(0);
   const [type, setType] = useState(0);
 
@@ -87,15 +94,6 @@ const Buy = (props) => {
     let game_round = await myContract.methods.GameRound().call();
     let user_info = await myContract.methods.UserInfo(addr[0]).call();
     let yourkey = await myContract.methods.UserKey(game_round, addr[0]).call();
-    document.getElementById("key").innerHTML =
-      "Your keys: " + parseInt(yourkey);
-    document.getElementById("claimed").innerHTML =
-      "Claimed return: " + parseInt(user_info.claimed) / 10 ** 18 + "BNB";
-    if (user_info.hasInvite == true) {
-      document.getElementById("invcode").innerHTML =
-        "Your invite code: " + user_info.invite;
-    }
-
     var total_return = user_info.total;
     if (user_info.setRnd != game_round) {
       for (var i = user_info.setRnd; i <= game_round; i++) {
@@ -107,8 +105,15 @@ const Buy = (props) => {
         total_return += (round_info.bnb * keys_) / round_info.keys;
       }
     }
-    document.getElementById("total").innerHTML =
-      "Total return: " + parseInt(total_return) / 10 ** 18 + "BNB";
+    dispatch({
+      type: "SET_USER_INFO",
+      data: {
+        ...userInfo,
+        claimed_return: parseInt(user_info.claimed) / 10 ** 18,
+        total_return: parseInt(total_return) / 10 ** 18,
+        key: parseInt(yourkey),
+      },
+    });
   };
 
   return (
@@ -119,7 +124,7 @@ const Buy = (props) => {
         </Typography>
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
         <Grid item sx={{ width: "100%", textAlign: "center" }}>
-          至少支付0.002 TBNB 来开启一轮游戏
+          至少支付0.002 TBNB（1 key） 来开启一轮游戏
         </Grid>
         <Box sx={{ height: "1rem", width: "100%" }}></Box>
         <Box
@@ -131,13 +136,14 @@ const Buy = (props) => {
             width: "100%",
           }}
         >
-          <AccountCircle
-            sx={{
-              height: "100%",
+          <img
+            src={Bnb?.src}
+            style={{
+              width: "2rem",
               color: "action.active",
-              backgroundColor: "#e9ecef",
-              border: "1px solid #ced4da",
+              transform: "scale(0.75)",
             }}
+            alt=""
           />
           <TextField
             variant="standard"
@@ -145,8 +151,18 @@ const Buy = (props) => {
             fullWidth
             id="fullWidth"
             onChange={handleChangeCount}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end" paddingRight="10px">
+                  Key
+                </InputAdornment>
+              ),
+            }}
             sx={{
               borderRadius: "8px",
+              "& .MuiInputAdornment-root": {
+                marginRight: "5px",
+              },
               "& .MuiInputBase-colorPrimary": {
                 borderBottom: "none",
                 "&:focus,&:active,&:hover": {
@@ -175,21 +191,21 @@ const Buy = (props) => {
               onClick={buy}
             >
               <img src={Bnb?.src} style={{ height: "1.5rem" }} alt="" />
-              发送BNB
+              {"Send BNB"}
             </Button>
           </Grid>
           <Grid item align="center" lg={5.5} md={5.5} sm={5.5} xs={5.5}>
             <Button className={`${styles.btnGold} ${styles.btnSize}`}>
               <SavingsIcon />
-              使用金库
+              Use vault
             </Button>
           </Grid>
           <p lg={12} md={12} sm={12} xs={12} className={styles.text}>
-            发送ETH，或使用您的金库中的收入！
+            send BNB, or use the income in your vault!
           </p>
         </Grid>
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
-        <Typography>{"选择一个团队"}</Typography>
+        <Typography>{"Select Your Team"}</Typography>
         <Grid
           container
           sx={{ justifyContent: "space-between", paddingTop: "1rem" }}

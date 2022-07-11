@@ -13,15 +13,16 @@
 .btnGold {
     width: 100%;
     color: white;
-    background-color: #EFAD00;
+    background-color: #fd00fe;
+    text-transform: capitalize;
 }
 
 .btnGold:hover,
 .btnGold:focus,
 .btnGold.active {
     transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
-    background-color: #EFAD00;
-    box-shadow: 0 0 2px #2b002b, 0 0 25px #efad00, 0 0 5px #efad00;
+    background-color: #fd00fe;
+    box-shadow: 0 0 2px #2b002b, 0 0 25px #fd00fe, 0 0 5px #fd00fe;
     text-shadow: 0 0 2px #2b002b;
     /* color: white; */
 }
@@ -45,7 +46,7 @@
     display: inline-block;
     cursor: pointer;
     animation: slowpulse 1s infinite;
-    filter: drop-shadow(0 0 2px #2b002b) drop-shadow(0 0 25px #EFAD00) drop-shadow(0 0 5px #EFAD00);
+    filter: drop-shadow(0 0 2px #2b002b) drop-shadow(0 0 25px #fd00fe) drop-shadow(0 0 5px #fd00fe);
 }
 
 .label img {
@@ -56,12 +57,12 @@
 
 .label img:hover {
     animation: slowpulse 1s infinite;
-    filter: drop-shadow(0 0 2px #2b002b) drop-shadow(0 0 25px #EFAD00) drop-shadow(0 0 5px #EFAD00);
+    filter: drop-shadow(0 0 2px #2b002b) drop-shadow(0 0 25px #fd00fe) drop-shadow(0 0 5px #fd00fe);
 }
 
 .label img:focus {
     animation: slowpulse 1s infinite;
-    filter: drop-shadow(0 0 2px #2b002b) drop-shadow(0 0 25px #EFAD00) drop-shadow(0 0 5px #EFAD00);
+    filter: drop-shadow(0 0 2px #2b002b) drop-shadow(0 0 25px #fd00fe) drop-shadow(0 0 5px #fd00fe);
 }
 
 .label p {

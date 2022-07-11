@@ -28,20 +28,21 @@
 }
 
 .showInfo .btn {
+    text-transform: capitalize;
     color: white;
     display: block;
     min-width: 100%;
     background-color: transparent;
-    border: 1px solid #EFAD00;
+    border: 1px solid #fd00fe;
     margin-bottom: 1rem;
 }
 
 .showInfo .btn:hover {
     color: white;
-    background-color: #EFAD00;
+    background-color: #fd00fe;
     text-decoration: none;
 }
 
 .glow {
-    text-shadow: 0 0 2px #2b002b, 0 0 10px #efad00, 0 0 5px #efad00;
+    text-shadow: 0 0 2px #2b002b, 0 0 10px #fd00fe, 0 0 5px #fd00fe;
 }

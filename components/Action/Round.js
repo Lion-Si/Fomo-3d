@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Grid, Box, Typography, Button } from "@mui/material";
+import KeyIcon from "@mui/icons-material/Key";
 
 import styles from "../../styles/components/Round.module.css";
 
@@ -7,8 +9,13 @@ import { switch_to_bsc } from "../../src/utils/Common";
 import ABI from "../../public/abi.json";
 
 const Address = "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b";
+const usFormatterSix = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 6,
+});
 
 const Round = (props) => {
+  const gameInfo = useSelector((state) => state.gameInfo);
+  const userInfo = useSelector((state) => state.userInfo);
   const [count, setCount] = useState(0);
   const [type, setType] = useState(0);
 
@@ -64,20 +71,24 @@ const Round = (props) => {
   return (
     <Box sx={{ p: 1 }}>
       <Grid container>
-        <Typography className={styles.thin}>{"回合 #35"}</Typography>
+        <Typography className={styles.thin}>Round #{gameInfo.round}</Typography>
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
         <Grid
           item
           sx={{ width: "100%", textAlign: "center", marginBottom: "1rem" }}
         >
-          奖池中有这么多ETH，你 还在等什么？
+          奖池中有这么多BNB，你 还在等什么？
         </Grid>
         <Button
           className={`${styles.btnGold} ${styles.btnSize}`}
-          sx={{ marginBottom: "40px" }}
+          sx={{
+            marginBottom: "40px",
+          }}
           onClick={buy}
         >
-          梭哈一个钥匙&nbsp;&nbsp;&nbsp;&nbsp;赢走亿万财富
+          梭哈一个钥匙
+          <KeyIcon style={{ transform: "rotate(135deg)" }} />
+          赢走亿万财富
         </Button>
         <Grid container className={styles.showInfo}>
           <Grid
@@ -88,12 +99,15 @@ const Round = (props) => {
             xs={5.5}
             className={styles.item}
           >
-            总奖池
+            Active Pot
           </Grid>
           <Grid item lg={6} md={6} sm={6} xs={6} className={styles.text}>
             <Grid container sx={{ justifyContent: "flex-end" }}>
               <Grid item className={styles.small}>
-                <span className={styles.glow}>0.0000</span>&nbsp;ETH
+                <span className={styles.glow}>
+                  {usFormatterSix.format(gameInfo.total_pot)}
+                </span>
+                &nbsp;BNB
               </Grid>
               <Grid item sx={{ fontSize: "1rem" }}>
                 ≙ 0.21511 USDT
@@ -108,12 +122,33 @@ const Round = (props) => {
             xs={5.5}
             className={styles.item}
           >
-            你的收入
+            Your Keys
           </Grid>
           <Grid item lg={6} md={6} sm={6} xs={6} className={styles.text}>
             <Grid container sx={{ justifyContent: "flex-end" }}>
               <Grid item className={styles.small}>
-                <span className={styles.glow}>0.0000</span>&nbsp;ETH
+                <span className={styles.glow}>{userInfo?.key}</span>&nbsp;
+                <KeyIcon style={{ transform: "rotate(135deg)",fontSize:"2.25rem" }} />
+              </Grid>
+              <Grid item sx={{ fontSize: "1rem" }}>
+                Total { gameInfo.key } keys
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            lg={5.5}
+            md={5.5}
+            sm={5.5}
+            xs={5.5}
+            className={styles.item}
+          >
+            Your Earnings
+          </Grid>
+          <Grid item lg={6} md={6} sm={6} xs={6} className={styles.text}>
+            <Grid container sx={{ justifyContent: "flex-end" }}>
+              <Grid item className={styles.small}>
+                <span className={styles.glow}>{usFormatterSix.format(userInfo?.total_return)}</span>&nbsp;BNB
               </Grid>
               <Grid item sx={{ fontSize: "1rem" }}>
                 ≙ USDT

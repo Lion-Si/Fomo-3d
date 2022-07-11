@@ -14,6 +14,7 @@ const Loader = () => {
       }}
     >
       <CircularProgress />
+      <br />
       <div>Loading ~</div>
     </Box>
   );

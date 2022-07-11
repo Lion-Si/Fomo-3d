@@ -31,7 +31,7 @@
 .btnGold {
     width: 100%;
     color: white;
-    background-color: #EFAD00;
+    background-color: #fd00fe;
     display: flex;
     align-items: flex-start;
 }
@@ -40,8 +40,8 @@
 .btnGold:focus,
 .btnGold.active {
     transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
-    background-color: #EFAD00;
-    box-shadow: 0 0 2px #2b002b, 0 0 25px #efad00, 0 0 5px #efad00;
+    background-color: #fd00fe;
+    box-shadow: 0 0 2px #2b002b, 0 0 25px #fd00fe, 0 0 5px #fd00fe;
     text-shadow: 0 0 2px #2b002b;
     /* color: white; */
 }

@@ -18,6 +18,30 @@
     border-radius: 4px;
 }
 
+.hideBtn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: aliceblue;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.75;
+    min-width: 64px;
+    padding: 6px 8px;
+    margin: 1rem 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.hideBtn:hover {
+    text-shadow: 0 0 2px #2b002b, 0 0 25px #fd00fe, 0 0 5px #fd00fe;
+    background-color: transparent;
+    border: 1px solid #fd00fe;
+}
+
 .appBar .btn {
     cursor: pointer;
     display: flex;
@@ -37,7 +61,7 @@
 }
 
 .appBar .btn:hover {
-    text-shadow: 0 0 2px #2b002b, 0 0 25px #efad00, 0 0 5px #efad00;
+    text-shadow: 0 0 2px #2b002b, 0 0 25px #fd00fe, 0 0 5px #fd00fe;
     background-color: transparent;
-    border: 1px solid #EFAD00;
+    border: 1px solid #fd00fe;
 }
