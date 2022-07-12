@@ -37,9 +37,9 @@
 }
 
 .hideBtn:hover {
-    text-shadow: 0 0 2px #2b002b, 0 0 25px #fd00fe, 0 0 5px #fd00fe;
+    text-shadow: 0 0 2px #2b002b, 0 0 25px #FD02EF, 0 0 5px #FD02EF;
     background-color: transparent;
-    border: 1px solid #fd00fe;
+    border: 1px solid #FD02EF;
 }
 
 .appBar .btn {
@@ -61,7 +61,7 @@
 }
 
 .appBar .btn:hover {
-    text-shadow: 0 0 2px #2b002b, 0 0 25px #fd00fe, 0 0 5px #fd00fe;
+    text-shadow: 0 0 2px #2b002b, 0 0 25px #FD02EF, 0 0 5px #FD02EF;
     background-color: transparent;
-    border: 1px solid #fd00fe;
+    border: 1px solid #FD02EF;
 }

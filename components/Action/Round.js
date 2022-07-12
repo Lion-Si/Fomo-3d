@@ -8,7 +8,7 @@ import styles from "../../styles/components/Round.module.css";
 import { switch_to_bsc } from "../../src/utils/Common";
 import ABI from "../../public/abi.json";
 
-const Address = "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b";
+const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
 const usFormatterSix = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 6,
 });
@@ -86,9 +86,8 @@ const Round = (props) => {
           }}
           onClick={buy}
         >
-          梭哈一个钥匙
+          Round will drain in
           <KeyIcon style={{ transform: "rotate(135deg)" }} />
-          赢走亿万财富
         </Button>
         <Grid container className={styles.showInfo}>
           <Grid

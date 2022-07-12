@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@mui/styles";
 import { Box, Tabs, Tab, Grid, Button } from "@mui/material";
 import KeyIcon from "@mui/icons-material/KeyOutlined";
-// import SmoothScroll from "smooth-scroll";
 
 import ABI from "../public/abi.json";
 
@@ -14,8 +13,6 @@ import Buy from "../components/Action/Buy";
 import Vault from "../components/Action/Vault";
 import Recommend from "../components/Action/Recommend";
 import Round from "../components/Action/Round";
-import { useRouter } from "next/router";
-import History from "../components/Action/History";
 
 const useStyles = makeStyles((theme) => ({
   tabBox: {
@@ -45,11 +42,9 @@ const secondProps = (index) => {
 
 const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
 
-const About = (props) => {
+const Whitepaper = () => {
   const classes = useStyles();
-  const router = useRouter();
   const gameInfo = useSelector((state) => state.gameInfo);
-  const roundTime = useSelector((state) => state.round_time);
   // 通信必备
   const dispatch = useDispatch();
   const [actionValue, setActionValue] = useState(0);
@@ -60,25 +55,9 @@ const About = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       fresh_base_info();
-      if (roundTime === "00:00:00") {
-        clearInterval(interval);
-      }
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    if (router?.query?.way === "invite") {
-      // let scroll = new SmoothScroll();
-      // let anchor = document?.querySelector("#invite");
-      // scroll.animateScroll(anchor);
-      setActionValue(2);
-    }
-  }, []);
-
-  const changeToVault = () => {
-    setActionValue(1);
-  };
 
   const handleActionChange = (event, newValue) => {
     setActionValue(newValue);
@@ -99,8 +78,7 @@ const About = (props) => {
       data: {
         ...gameInfo,
         round: parseInt(game_round),
-        total_pot: parseInt(round_info.bnb) / 10 ** 18,
-        bnb: parseInt(round_info.pot) / 10 ** 18,
+        total_pot: parseInt(round_info.pot) / 10 ** 18,
         key: parseInt(cur_key),
         current_winner: round_info.plyr,
       },
@@ -226,7 +204,7 @@ const About = (props) => {
                     {...firstProps(1)}
                   />
                   <Tab
-                    label="Referral Program"
+                    label="推荐奖励"
                     sx={{
                       color: "white",
                       "&:hover": {
@@ -240,16 +218,14 @@ const About = (props) => {
                 </Tabs>
               </Box>
               <TabPanel value={actionValue} index={0}>
-                <Buy changeToVault={changeToVault} />
+                <Buy />
               </TabPanel>
               <TabPanel value={actionValue} index={1}>
                 <Vault />
               </TabPanel>
-              <div id="invite">
-                <TabPanel value={actionValue} index={2}>
-                  <Recommend />
-                </TabPanel>
-              </div>
+              <TabPanel value={actionValue} index={2}>
+                <Recommend />
+              </TabPanel>
             </Grid>
             <Grid item className={styles.tab} lg={5} md={6} sm={11} xs={12}>
               <Box
@@ -285,7 +261,7 @@ const About = (props) => {
                     {...secondProps(1)}
                   />
                   <Tab
-                    label="Last Winners"
+                    label="Stats"
                     sx={{ color: "white" }}
                     {...secondProps(2)}
                   />
@@ -298,7 +274,7 @@ const About = (props) => {
                 暂无
               </TabPanel>
               <TabPanel value={recordValue} index={2}>
-                <History />
+                暂无
               </TabPanel>
             </Grid>
           </Grid>
@@ -308,4 +284,4 @@ const About = (props) => {
   );
 };
 
-export default About;
+export default Whitepaper;

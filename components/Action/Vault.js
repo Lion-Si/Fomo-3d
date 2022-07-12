@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Grid,
@@ -8,17 +8,19 @@ import {
   Button,
   Divider,
 } from "@mui/material";
+import Fetch from "../../src/utils/Fetch";
 
 import styles from "../../styles/components/Vault.module.css";
 
 import { switch_to_bsc } from "../../src/utils/Common";
 import ABI from "../../public/abi.json";
 
-const Address = "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b";
+const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
 const usFormatterSix = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 6,
 });
 const Vault = (props) => {
+  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
   const isConnect = useSelector((state) => state.isConnect);
   const user_address = useSelector((state) => state.user_address);
@@ -94,6 +96,24 @@ const Vault = (props) => {
     });
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getBnbPrice();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const getBnbPrice = () => {
+    // Fetch(`/api/v3/ticker/price?symbol=BNBUSDT`, {
+    //   method: "GET",
+    // })
+    //   .then((res) => {
+    //     console.log(res);
+    //     setBnbPrice(res?.price);
+    //   })
+    //   .catch((error) => {});
+  };
+
   return (
     <Box sx={{ p: 1 }}>
       <Grid container>
@@ -108,7 +128,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.item}
           >
-            Locked Earnings
+            Unclaimed
           </Grid>
           <Grid
             item
@@ -119,7 +139,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.text}
           >
-            {usFormatterSix.format(userInfo?.total_return)} BNB
+            {userInfo?.total_return - userInfo?.claimed_return} BNB
           </Grid>
           <Grid
             item
@@ -129,7 +149,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.item}
           >
-            Withdrawn
+            Claimed
           </Grid>
           <Grid
             item
@@ -161,7 +181,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.text}
           >
-            {userInfo.key} BNB
+            {userInfo?.referral_return} BNB
           </Grid>
           <Box sx={{ height: "2rem", width: "100%" }}></Box>
           <Grid

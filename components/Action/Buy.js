@@ -24,28 +24,28 @@ import ABI from "../../public/abi.json";
 
 const radio_data = [
   {
-    name: "Balance",
-    src: Bear,
-    description: "Balance may important",
-  },
-  {
-    name: "Generous",
-    src: Bull,
-    description: "Generous may important",
-  },
-  {
-    name: "Greedy",
+    name: "Snek",
     src: Snek,
-    description: "Greedy may important",
+    description: "Trickle down Divinomics",
   },
   {
-    name: "Cooperate",
+    name: "Whale",
     src: Whale,
-    description: "Cooperate may important",
+    description: "Feed on greed of others",
+  },
+  {
+    name: "Bull",
+    src: Bull,
+    description: "Break upwards, never stagnate",
+  },
+  {
+    name: "Bear",
+    src: Bear,
+    description: "Stand alone, fight alone",
   },
 ];
 
-const Address = "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b";
+const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
 
 const Buy = (props) => {
   // 获取中央仓库中的数据(需要的时候在引入)
@@ -53,7 +53,7 @@ const Buy = (props) => {
   // 通信必备
   const dispatch = useDispatch();
 
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const [type, setType] = useState(0);
 
   const handleChangeCount = (e) => {
@@ -78,9 +78,11 @@ const Buy = (props) => {
       }
       const web3 = new Web3(window.ethereum);
       let myContract = new web3.eth.Contract(ABI, Address);
+      let currentValue = await myContract.methods.CurrentFomoPrice().call();
+      console.log(currentValue, type, count);
       await myContract.methods
         .BuyKey(type, count)
-        .send({ from: addr[0], value: 2 * 10 ** 15 });
+        .send({ from: addr[0], value: count * currentValue });
       await fresh_key_return();
     } else {
       alert("please install MetaMask");
@@ -109,6 +111,7 @@ const Buy = (props) => {
       type: "SET_USER_INFO",
       data: {
         ...userInfo,
+        referral_return: parseInt(user_info.invIncome) / 10 ** 18,
         claimed_return: parseInt(user_info.claimed) / 10 ** 18,
         total_return: parseInt(total_return) / 10 ** 18,
         key: parseInt(yourkey),
@@ -152,11 +155,7 @@ const Buy = (props) => {
             id="fullWidth"
             onChange={handleChangeCount}
             InputProps={{
-              endAdornment: (
-                <InputAdornment position="end" paddingRight="10px">
-                  Key
-                </InputAdornment>
-              ),
+              endAdornment: <InputAdornment position="end">Key</InputAdornment>,
             }}
             sx={{
               borderRadius: "8px",
@@ -195,17 +194,20 @@ const Buy = (props) => {
             </Button>
           </Grid>
           <Grid item align="center" lg={5.5} md={5.5} sm={5.5} xs={5.5}>
-            <Button className={`${styles.btnGold} ${styles.btnSize}`}>
+            <Button
+              className={`${styles.btnGold} ${styles.btnSize}`}
+              onClick={props.changeToVault}
+            >
               <SavingsIcon />
               Use vault
             </Button>
           </Grid>
           <p lg={12} md={12} sm={12} xs={12} className={styles.text}>
-            send BNB, or use the income in your vault!
+            Each bet have 10% chance to win 3% of the pot
           </p>
         </Grid>
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
-        <Typography>{"Select Your Team"}</Typography>
+        <Typography>{"Choose Your Team"}</Typography>
         <Grid
           container
           sx={{ justifyContent: "space-between", paddingTop: "1rem" }}

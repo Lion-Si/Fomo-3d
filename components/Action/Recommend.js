@@ -18,7 +18,7 @@ import styles from "../../styles/components/Recommend.module.css";
 import { switch_to_bsc } from "../../src/utils/Common";
 import ABI from "../../public/abi.json";
 
-const Address = "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b";
+const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
 
 const Recommend = (props) => {
   const user_address = useSelector((state) => state.user_address);
@@ -93,7 +93,11 @@ const Recommend = (props) => {
         <IconButton onClick={() => handleSetEdit(true)}>
           <CancelOutlinedIcon sx={{ color: "white" }} />
         </IconButton>
-        <Button onClick={apply} className={styles.btnGold} style={{ width:"10px" }}>
+        <Button
+          onClick={apply}
+          className={styles.btnGold}
+          style={{ width: "10px" }}
+        >
           申请
         </Button>
       </Grid>
@@ -103,12 +107,14 @@ const Recommend = (props) => {
   return (
     <Box sx={{ p: 1 }}>
       <Grid container>
-        <Typography className={styles.thin}>{"让更多人参与梭哈"}</Typography>
+        <Typography className={styles.thin}>{"A Bad Idea"}</Typography>
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
         <Grid container className={styles.showInfo}>
           {hasCode ? renderShowCode() : renderHideCode()}
           <Grid item className={styles.item}>
-            购买一个代号来生成推广链接，并直接分享高达20%的佣金
+            {!hasCode
+              ? "Generate a referral link to invite more people exit scamming together, get 2.5% from their bets"
+              : "Get 2.5% from invitee’s bets, invitee will get 5% off from their first bet"}
           </Grid>
           <Button className={styles.btnGold}>
             <CheckIcon />

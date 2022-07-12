@@ -22,7 +22,7 @@
   min-height: 100%;
   width: auto;
   height: auto;
-  background-image: url("../public/assets/purple_bg.jpg");
+  background-image: url("../public/assets/pink_bg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -157,7 +157,7 @@
 .btnGold {
   width: 81.5%;
   color: white;
-  background-color: #fd00fe;
+  background-color: #FD02EF;
   margin-bottom: 4rem;
 }
 
@@ -165,8 +165,8 @@
 .btnGold:focus,
 .btnGold.active {
   transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
-  background-color: #fd00fe;
-  box-shadow: 0 0 2px #2b002b, 0 0 25px #fd00fe, 0 0 5px #fd00fe;
+  background-color: #FD02EF;
+  box-shadow: 0 0 2px #2b002b, 0 0 25px #FD02EF, 0 0 5px #FD02EF;
   text-shadow: 0 0 2px #2b002b;
   /* color: white; */
 }

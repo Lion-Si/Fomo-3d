@@ -33,16 +33,16 @@
     display: block;
     min-width: 100%;
     background-color: transparent;
-    border: 1px solid #fd00fe;
+    border: 1px solid #FD02EF;
     margin-bottom: 1rem;
 }
 
 .showInfo .btn:hover {
     color: white;
-    background-color: #fd00fe;
+    background-color: #FD02EF;
     text-decoration: none;
 }
 
 .glow {
-    text-shadow: 0 0 2px #2b002b, 0 0 10px #fd00fe, 0 0 5px #fd00fe;
+    text-shadow: 0 0 2px #2b002b, 0 0 10px #FD02EF, 0 0 5px #FD02EF;
 }

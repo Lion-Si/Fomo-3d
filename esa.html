@@ -517,7 +517,7 @@
 	
 	async function fresh_keyreturn(){
 		const web3 = new Web3(window.ethereum);
-		let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+		let myContract = new web3.eth.Contract(ABI, "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1");
 		let addr=await ethereum.request({ method: 'eth_requestAccounts' });
 		let game_round = await myContract.methods.GameRound().call();
 		let user_info = await myContract.methods.UserInfo(addr[0]).call();
@@ -544,7 +544,7 @@
 	
 	async function fresh_baseinfo(){
 		const web3 = new Web3(window.ethereum);
-		let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+		let myContract = new web3.eth.Contract(ABI, "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1");
 		let game_round = await myContract.methods.GameRound().call();
 		let round_info = await myContract.methods.RoundInfo(game_round).call();
 		let cur_key = await myContract.methods.CurrentKeyNum().call();
@@ -576,7 +576,7 @@
 				return;
             }
             const web3 = new Web3(window.ethereum);
-            let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+            let myContract = new web3.eth.Contract(ABI, "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1");
             await myContract.methods.BuyKey(team, invite).send({from: addr[0],value: 2*(10**15)}); 
             await fresh_keyreturn(); 
 		}
@@ -593,7 +593,7 @@
 				return;
             }
             const web3 = new Web3(window.ethereum);
-            let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+            let myContract = new web3.eth.Contract(ABI, "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1");
             await myContract.methods.Settle().send({from: addr[0],value: 0}); 
             await fresh_keyreturn(); 
 		}
@@ -610,7 +610,7 @@
 				return;
             }
             const web3 = new Web3(window.ethereum);
-            let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+            let myContract = new web3.eth.Contract(ABI, "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1");
             await myContract.methods.Claim().send({from: addr[0],value: 0}); 
             await fresh_keyreturn(); 
 		}
@@ -628,7 +628,7 @@
 				return;
             }
             const web3 = new Web3(window.ethereum);
-            let myContract = new web3.eth.Contract(ABI, "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b");
+            let myContract = new web3.eth.Contract(ABI, "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1");
             await myContract.methods.GenerateInviteCode(code).send({from: addr[0],value: 0}); 
             await fresh_keyreturn(); 
 		}

@@ -11,10 +11,12 @@ import {
   Button,
   Tooltip,
 } from "@mui/material";
+import Bnb from "../../public/assets/bnb.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import TwitterIcon from "@mui/icons-material/Twitter";
 import KeyIcon from "@mui/icons-material/KeyOutlined";
 import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
 import Link from "next/link";
@@ -25,15 +27,16 @@ import ABI from "../../public/abi.json";
 
 const pages = ["about", "Pricing", "Blog"];
 
-const Address = "0xcEE9f25B0443513abCD609B4BD50a4F8315E640b";
+const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = (props) => {
   // 获取中央仓库中的数据(需要的时候在引入)
   const userInfo = useSelector((state) => state.userInfo);
   const isConnect = useSelector((state) => state.isConnect);
   const user_address = useSelector((state) => state.user_address);
   const invite_code = useSelector((state) => state.invite_code);
   const round_time = useSelector((state) => state.round_time);
+  const gameInfo = useSelector((state) => state.gameInfo);
   // 通信必备
   const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -216,9 +219,9 @@ const ResponsiveAppBar = () => {
               <span>{userInfo?.key || "000"}</span>
             </div>
             <div readOnly={true} onClick={handleCloseNavMenu}>
-              <span>3.2% (102.13 ETH)</span>
+              <img src={Bnb?.src} style={{ height: "1rem" }} alt="" />&nbsp;
+              <span>{gameInfo?.bnb || "00"}</span>
             </div>
-
             {/* <Button
               href={`/about`}
               onClick={handleCloseNavMenu}
@@ -226,16 +229,26 @@ const ResponsiveAppBar = () => {
             >
               {"About"}
             </Button> */}
-            <Button onClick={handleCloseNavMenu} className={styles.btn}>
-              <LinkOutlinedIcon style={{ transform: "rotate(135deg)" }} />
-              <span>购买推广链接</span>
+            <Button>
+              <Link
+                className={styles.btn}
+                href={{
+                  pathname: "/about",
+                  query: { way: "invite" },
+                }}
+              >
+                <div>
+                  <LinkOutlinedIcon style={{ transform: "rotate(135deg)" }} />
+                  <span>Referral Program</span>
+                </div>
+              </Link>
             </Button>
             <Button
-              href={`https://t.me/suohame`}
+              href={`https://twitter.com/Exit_Scamming/about`}
               onClick={handleCloseNavMenu}
               className={styles.btn}
             >
-              <TelegramIcon />
+              <TwitterIcon />
             </Button>
             <Button
               href={`https://testnet.bscscan.com/address/${Address}`}
@@ -244,23 +257,15 @@ const ResponsiveAppBar = () => {
             >
               {"contract"}
             </Button>
-            <Button
-              href={`/`}
-              onClick={handleCloseNavMenu}
-              className={styles.btn}
-            >
-              {"Help"}
-            </Button>
-            <Button
-              href={`https://cobo.com/`}
-              onClick={handleCloseNavMenu}
-              className={styles.btn}
-            >
-              {"Cobo"}
-            </Button>
+            <a className={styles.btn}>{"White Paper"}</a>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Button id="connect" type="button" onClick={login} className={styles.hideBtn}>
+            <Button
+              id="connect"
+              type="button"
+              onClick={login}
+              className={styles.hideBtn}
+            >
               connect wallet
             </Button>
           </Box>

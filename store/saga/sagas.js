@@ -2,7 +2,7 @@ import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* showSaga(action) {
-  console.log(action.data);
+  // console.log(action.data);
 }
 
 /*
