@@ -9,14 +9,17 @@ const initState = {
     round: 0,
     total_pot: 0,
     key: 0,
+    total_key: 0,
     bnb: 0,
+    share: 0,
   },
   userInfo: {
     referral_return: 0,
     total_return: 0,
     claimed_return: 0,
-    key: "",
+    key: 0,
   },
+  current_price: "",
 };
 // reducer纯函数，用于操作中央仓库的数据
 export const reducer = (state = initState, action) => {
@@ -54,6 +57,11 @@ export const reducer = (state = initState, action) => {
       return {
         ...state,
         userInfo: data,
+      };
+    case "SET_CURRENT_PRICE":
+      return {
+        ...state,
+        current_price: data,
       };
     default:
       return initState;

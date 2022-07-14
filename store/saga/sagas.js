@@ -16,6 +16,7 @@ function* mySaga() {
   yield takeEvery("SET_ROUND_TIME", showSaga);
   yield takeEvery("SET_USER_INFO", showSaga);
   yield takeEvery("SET_GAME_INFO", showSaga);
+  yield takeEvery("SET_CURRENT_PRICE", showSaga);
 }
 
 export default mySaga;

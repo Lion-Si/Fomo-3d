@@ -41,11 +41,14 @@ const ResponsiveAppBar = (props) => {
   const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = useState(null);
 
-  useEffect(() => {
-    if (user_address.length !== 0) {
-      login();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("isConnect")) {
+  //     console.log("当前登录？", isConnect, localStorage.getItem("isConnect"));
+  //     if (typeof Web3 !== undefined) {
+  //       login();
+  //     }
+  //   }
+  // }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -70,6 +73,7 @@ const ResponsiveAppBar = (props) => {
         type: "SET_CONNECT_STATUS",
         data: true,
       });
+      localStorage.setItem("isConnect", true);
       dispatch({
         type: "SET_USER_ADDRESS",
         data: addr[0],
@@ -81,38 +85,44 @@ const ResponsiveAppBar = (props) => {
   };
 
   const fresh_key_return = async () => {
-    const web3 = new Web3(window.ethereum);
-    let myContract = new web3.eth.Contract(ABI, Address);
-    let addr = await ethereum.request({ method: "eth_requestAccounts" });
-    let game_round = await myContract.methods.GameRound().call();
-    let user_info = await myContract.methods.UserInfo(addr[0]).call();
-    let yourkey = await myContract.methods.UserKey(game_round, addr[0]).call();
-    if (user_info.hasInvite == true) {
+    console.log(typeof Web3);
+    if (typeof Web3 !== undefined && window.ethereum) {
+      const web3 = new Web3(window.ethereum);
+      let myContract = new web3.eth.Contract(ABI, Address);
+      let addr = await ethereum.request({ method: "eth_requestAccounts" });
+      let game_round = await myContract.methods.GameRound().call();
+      let user_info = await myContract.methods.UserInfo(addr[0]).call();
+      let yourkey = await myContract.methods
+        .UserKey(game_round, addr[0])
+        .call();
+      if (user_info.hasInvite == true) {
+        dispatch({
+          type: "SET_INVITE_CODE",
+          data: user_info.invite,
+        });
+      }
+      var total_return = user_info.total;
+      if (user_info.setRnd != game_round) {
+        for (var i = user_info.setRnd; i <= game_round; i++) {
+          let round_info = await myContract.methods.RoundInfo(i).call();
+          if (round_info.keys == 0) {
+            continue;
+          }
+          let keys_ = await myContract.methods.UserKey(i, addr[0]).call();
+          total_return += (round_info.bnb * keys_) / round_info.keys;
+        }
+      }
       dispatch({
-        type: "SET_INVITE_CODE",
-        data: user_info.invite,
+        type: "SET_USER_INFO",
+        data: {
+          ...userInfo,
+          referral_return: parseInt(user_info.invIncome) / 10 ** 18,
+          claimed_return: parseInt(user_info.claimed) / 10 ** 18,
+          total_return: parseInt(total_return) / 10 ** 18,
+          key: parseInt(yourkey),
+        },
       });
     }
-    var total_return = user_info.total;
-    if (user_info.setRnd != game_round) {
-      for (var i = user_info.setRnd; i <= game_round; i++) {
-        let round_info = await myContract.methods.RoundInfo(i).call();
-        if (round_info.keys == 0) {
-          continue;
-        }
-        let keys_ = await myContract.methods.UserKey(i, addr[0]).call();
-        total_return += (round_info.bnb * keys_) / round_info.keys;
-      }
-    }
-    dispatch({
-      type: "SET_USER_INFO",
-      data: {
-        ...userInfo,
-        claimed_return: parseInt(user_info.claimed) / 10 ** 18,
-        total_return: parseInt(total_return) / 10 ** 18,
-        key: parseInt(yourkey),
-      },
-    });
   };
 
   return (
@@ -219,7 +229,8 @@ const ResponsiveAppBar = (props) => {
               <span>{userInfo?.key || "000"}</span>
             </div>
             <div readOnly={true} onClick={handleCloseNavMenu}>
-              <img src={Bnb?.src} style={{ height: "1rem" }} alt="" />&nbsp;
+              <img src={Bnb?.src} style={{ height: "1rem" }} alt="" />
+              &nbsp;
               <span>{gameInfo?.bnb || "00"}</span>
             </div>
             {/* <Button

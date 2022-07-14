@@ -5,12 +5,14 @@ import { makeStyles } from "@mui/styles";
 import { Box, Tabs, Tab, Grid, Button } from "@mui/material";
 import KeyIcon from "@mui/icons-material/KeyOutlined";
 // import SmoothScroll from "smooth-scroll";
+import dynamic from "next/dynamic";
 
 import ABI from "../public/abi.json";
 
 import TabPanel from "../components/TabPanel/TabPanel";
 import styles from "../styles/About.module.css";
 import Buy from "../components/Action/Buy";
+
 import Vault from "../components/Action/Vault";
 import Recommend from "../components/Action/Recommend";
 import Round from "../components/Action/Round";
@@ -45,16 +47,23 @@ const secondProps = (index) => {
 
 const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
 
+// const SmoothScroll = dynamic(() => import("smooth-scroll"), {
+//   ssr: false,
+// });
+
 const About = (props) => {
   const classes = useStyles();
   const router = useRouter();
+  const isConnect = useSelector((state) => state.isConnect);
+  const userAddress = useSelector((state) => state.user_address);
+  const invite_code = useSelector((state) => state.invite_code);
   const gameInfo = useSelector((state) => state.gameInfo);
   const roundTime = useSelector((state) => state.round_time);
   // 通信必备
   const dispatch = useDispatch();
   const [actionValue, setActionValue] = useState(0);
   const [recordValue, setRecordValue] = useState(0);
-
+  const [inviteCode, setInviteCode] = useState("");
   const [totalPot, setTotalPot] = useState(0);
 
   useEffect(() => {
@@ -69,12 +78,58 @@ const About = (props) => {
 
   useEffect(() => {
     if (router?.query?.way === "invite") {
-      // let scroll = new SmoothScroll();
-      // let anchor = document?.querySelector("#invite");
-      // scroll.animateScroll(anchor);
-      setActionValue(2);
+      importSmooth();
+    }
+    if (router?.query?.code) {
+      receiveInviteCode(router?.query?.code);
     }
   }, []);
+
+  /**
+   * 在 next/dynamic dynamic(...)来导入模块，只能导入组件
+   * 如果需要导入模块参照以下用法 Needs to be ran in an `async` context or environment that supports top-level `await`s
+   */
+  const importSmooth = async () => {
+    const SmoothScroll = (await import("smooth-scroll")).default;
+    let scroll = new SmoothScroll();
+    let anchor = document?.querySelector("#invite");
+    scroll.animateScroll(anchor);
+    setActionValue(2);
+  };
+
+  /**
+   * 本方法用来接收邀请码并自动填入
+   * @param {number | string} code 邀请码
+   */
+  const receiveInviteCode = (code) => {
+    if (invite_code.length !== 0) {
+      alert(`您已存在邀请码${invite_code}`);
+      router.push({
+        pathname: "/about",
+      });
+    } else {
+      alert(`当前邀请码为${code}`);
+      setInviteCode(code);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getBnbPrice();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const getBnbPrice = async () => {
+    const res = await fetch(
+      "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT"
+    );
+    const json = await res.json();
+    dispatch({
+      type: "SET_CURRENT_PRICE",
+      data: json.price,
+    });
+  };
 
   const changeToVault = () => {
     setActionValue(1);
@@ -101,8 +156,10 @@ const About = (props) => {
         round: parseInt(game_round),
         total_pot: parseInt(round_info.bnb) / 10 ** 18,
         bnb: parseInt(round_info.pot) / 10 ** 18,
+        total_key: parseInt(round_info.keys),
         key: parseInt(cur_key),
         current_winner: round_info.plyr,
+        share: parseInt(round_info.share) / 10 ** 18,
       },
     });
     var now = new Date();
@@ -135,9 +192,14 @@ const About = (props) => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main className={styles.main}>
-          <h1 className={styles.title}>
-            Total in pot : {gameInfo.total_pot} BNB
+          <h1 className={styles.subtitle}>
+            {isConnect
+              ? `${userAddress.slice(0, 7)}....${userAddress.substring(
+                  userAddress.length - 5
+                )} is `
+              : " Somebody else is "}
           </h1>
+          <h1 className={styles.title}>Exit Scamming Again</h1>
           <div
             style={{
               color: "white",
@@ -148,7 +210,7 @@ const About = (props) => {
             {gameInfo.total_pot} BNB
           </div>
           <div style={{ color: "white", fontSize: "2rem" }}>
-            即将被
+            {roundTime === "00:00:00" ? "was" : "will be"} taken away by &nbsp;
             <a
               style={{
                 color: "white",
@@ -162,19 +224,25 @@ const About = (props) => {
                   gameInfo?.current_winner?.length - 5
                 )}
             </a>
-            卷走！
           </div>
-          <span className={styles.text}>购买至少一个钥匙来开启新一轮游戏</span>
-          <Button
-            className={`${styles.btnGold} ${styles.btnSize}`}
-            href="/about"
-          >
+          <div className={styles.text}>
+            <span>{roundTime || "00:00:00"}</span>
+          </div>
+          <Button className={`${styles.btnGold} ${styles.btnSize}`}>
             <div style={{ display: "flex", alignItems: "center" }}>
               1x
               <KeyIcon style={{ transform: "rotate(135deg)" }} />
             </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              立即梭哈
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                textTransform: "capitalize",
+              }}
+            >
+              {roundTime === "00:00:00"
+                ? `Lucky! Your are the frist person to start a new round`
+                : `Join and Exit Scamming with ${gameInfo.total_pot} BNB`}
             </div>
           </Button>
           <Grid container className={styles.tabBox}>
@@ -239,15 +307,17 @@ const About = (props) => {
                   />
                 </Tabs>
               </Box>
-              <TabPanel value={actionValue} index={0}>
-                <Buy changeToVault={changeToVault} />
-              </TabPanel>
+              <div id="buy">
+                <TabPanel value={actionValue} index={0}>
+                  <Buy changeToVault={changeToVault} code={inviteCode} />
+                </TabPanel>
+              </div>
               <TabPanel value={actionValue} index={1}>
                 <Vault />
               </TabPanel>
               <div id="invite">
                 <TabPanel value={actionValue} index={2}>
-                  <Recommend />
+                  <Recommend code={inviteCode} />
                 </TabPanel>
               </div>
             </Grid>

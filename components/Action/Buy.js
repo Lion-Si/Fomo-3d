@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Grid,
@@ -8,6 +8,8 @@ import {
   Button,
   Divider,
   InputAdornment,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import SavingsIcon from "@mui/icons-material/Savings";
 
@@ -49,15 +51,49 @@ const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
 
 const Buy = (props) => {
   // 获取中央仓库中的数据(需要的时候在引入)
+  const { code } = props;
   const userInfo = useSelector((state) => state.userInfo);
+  const gameInfo = useSelector((state) => state.gameInfo);
+  const roundTime = useSelector((state) => state.round_time);
   // 通信必备
   const dispatch = useDispatch();
 
   const [count, setCount] = useState(1);
   const [type, setType] = useState(0);
+  const [currentBnb, setCurrentBnb] = useState(0);
+  const [alignment, setAlignment] = useState("1");
+  const [inviteCode, setInviteCode] = useState("");
+
+  useEffect(() => {
+    if (code) {
+      setInviteCode(code);
+    }
+  }, []);
+
+  const handleChange = (event, newAlignment) => {
+    if (newAlignment !== null) {
+      setAlignment(newAlignment);
+    }
+  };
 
   const handleChangeCount = (e) => {
     setCount(e.target.value);
+  };
+
+  useEffect(() => {
+    // 实例化web3
+    if (typeof Web3 !== "undefined") {
+      getCurrentBnb();
+    }
+  }, [alignment]);
+
+  const getCurrentBnb = async () => {
+    if (window.ethereum) {
+      const web3 = new Web3(window.ethereum);
+      let myContract = new web3.eth.Contract(ABI, Address);
+      console.log(await myContract.methods.CurrentFomoPrice().call());
+      setCurrentBnb(await myContract.methods.CurrentFomoPrice().call());
+    }
   };
 
   const checkRadio = () => {
@@ -80,9 +116,11 @@ const Buy = (props) => {
       let myContract = new web3.eth.Contract(ABI, Address);
       let currentValue = await myContract.methods.CurrentFomoPrice().call();
       console.log(currentValue, type, count);
-      await myContract.methods
-        .BuyKey(type, count)
-        .send({ from: addr[0], value: count * currentValue });
+      await myContract.methods.BuyKey(type, inviteCode).send({
+        from: addr[0],
+        value:
+          alignment * (roundTime === "00:00:00" ? 2 * 10 ** 15 : currentValue),
+      });
       await fresh_key_return();
     } else {
       alert("please install MetaMask");
@@ -123,11 +161,12 @@ const Buy = (props) => {
     <Box sx={{ p: 1 }}>
       <Grid container>
         <Typography className={styles.thin}>
-          {"A new round of games"}
+          {`Keyring # ${gameInfo.round}`}
         </Typography>
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
         <Grid item sx={{ width: "100%", textAlign: "center" }}>
-          至少支付0.002 TBNB（1 key） 来开启一轮游戏
+          Purchase keys to receive dividends from the following bets. Last
+          bettor will win all BNB in pot.
         </Grid>
         <Box sx={{ height: "1rem", width: "100%" }}></Box>
         <Box
@@ -139,23 +178,34 @@ const Buy = (props) => {
             width: "100%",
           }}
         >
-          <img
-            src={Bnb?.src}
-            style={{
-              width: "2rem",
-              color: "action.active",
-              transform: "scale(0.75)",
-            }}
-            alt=""
-          />
           <TextField
             variant="standard"
-            value={count}
+            value={`${alignment} keys`}
             fullWidth
+            readonly
             id="fullWidth"
             onChange={handleChangeCount}
             InputProps={{
-              endAdornment: <InputAdornment position="end">Key</InputAdornment>,
+              startAdornment: (
+                <img
+                  src={Bnb?.src}
+                  style={{
+                    width: "2rem",
+                    color: "action.active",
+                    transform: "scale(0.75)",
+                  }}
+                  alt=""
+                />
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  @{" "}
+                  {(alignment *
+                    (roundTime === "00:00:00" ? 2 * 10 ** 15 : currentBnb)) /
+                    10 ** 18}{" "}
+                  BNB
+                </InputAdornment>
+              ),
             }}
             sx={{
               borderRadius: "8px",
@@ -180,6 +230,50 @@ const Buy = (props) => {
             }}
           />
         </Box>
+        <Box sx={{ height: "1rem", width: "100%" }}></Box>
+        <Box
+          sx={{
+            width: "100%",
+            "& .MuiToggleButton-root": {
+              color: "#FD02EF",
+              border: "1px solid #FD02EF",
+            },
+            "& .Mui-selected": {
+              color: "#FD02EF !important",
+              backgroundColor: "rgba(253,2,239,0.3) !important",
+            },
+          }}
+        >
+          <ToggleButtonGroup
+            color="primary"
+            value={alignment}
+            sx={{ width: "100%" }}
+            exclusive
+            onChange={handleChange}
+          >
+            <ToggleButton value="1" sx={{ width: "30%" }}>
+              +1 keys
+            </ToggleButton>
+            <ToggleButton value="2" sx={{ width: "30%" }}>
+              +2 keys
+            </ToggleButton>
+            <ToggleButton value="3" sx={{ width: "11%" }}>
+              +<br />3
+            </ToggleButton>
+            <ToggleButton value="5" sx={{ width: "11%" }}>
+              +<br />5
+            </ToggleButton>
+            <ToggleButton value="10" sx={{ width: "11%" }}>
+              +<br />
+              10
+            </ToggleButton>
+            <ToggleButton value="20">
+              +<br />
+              20
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+
         <Grid
           container
           sx={{ justifyContent: "space-between", paddingTop: "1rem" }}

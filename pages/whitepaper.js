@@ -78,9 +78,12 @@ const Whitepaper = () => {
       data: {
         ...gameInfo,
         round: parseInt(game_round),
-        total_pot: parseInt(round_info.pot) / 10 ** 18,
+        total_pot: parseInt(round_info.bnb) / 10 ** 18,
+        bnb: parseInt(round_info.pot) / 10 ** 18,
+        total_key: parseInt(round_info.keys),
         key: parseInt(cur_key),
         current_winner: round_info.plyr,
+        share: parseInt(round_info.share) / 10 ** 18,
       },
     });
     var now = new Date();

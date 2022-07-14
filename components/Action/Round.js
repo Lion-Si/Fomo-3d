@@ -14,8 +14,10 @@ const usFormatterSix = new Intl.NumberFormat("en-US", {
 });
 
 const Round = (props) => {
+  const roundTime = useSelector((state) => state.round_time);
   const gameInfo = useSelector((state) => state.gameInfo);
   const userInfo = useSelector((state) => state.userInfo);
+  const current_price = useSelector((state) => state.current_price);
   const [count, setCount] = useState(0);
   const [type, setType] = useState(0);
 
@@ -89,6 +91,7 @@ const Round = (props) => {
           Round will drain in
           <KeyIcon style={{ transform: "rotate(135deg)" }} />
         </Button>
+        <span>Remaining time ： {roundTime || "00:00:00"}</span>
         <Grid container className={styles.showInfo}>
           <Grid
             item
@@ -109,7 +112,9 @@ const Round = (props) => {
                 &nbsp;BNB
               </Grid>
               <Grid item sx={{ fontSize: "1rem" }}>
-                ≙ 0.21511 USDT
+                {`≙ ${usFormatterSix.format(
+                  current_price * gameInfo.total_pot
+                )} USDT`}
               </Grid>
             </Grid>
           </Grid>
@@ -127,10 +132,12 @@ const Round = (props) => {
             <Grid container sx={{ justifyContent: "flex-end" }}>
               <Grid item className={styles.small}>
                 <span className={styles.glow}>{userInfo?.key}</span>&nbsp;
-                <KeyIcon style={{ transform: "rotate(135deg)",fontSize:"2.25rem" }} />
+                <KeyIcon
+                  style={{ transform: "rotate(135deg)", fontSize: "2.25rem" }}
+                />
               </Grid>
               <Grid item sx={{ fontSize: "1rem" }}>
-                Total { gameInfo.key } keys
+                Total {gameInfo.total_key} keys
               </Grid>
             </Grid>
           </Grid>
@@ -147,10 +154,18 @@ const Round = (props) => {
           <Grid item lg={6} md={6} sm={6} xs={6} className={styles.text}>
             <Grid container sx={{ justifyContent: "flex-end" }}>
               <Grid item className={styles.small}>
-                <span className={styles.glow}>{usFormatterSix.format(userInfo?.total_return)}</span>&nbsp;BNB
+                <span className={styles.glow}>
+                  {usFormatterSix.format(
+                    (userInfo?.key / gameInfo?.total_key) * gameInfo.share
+                  )}
+                </span>
+                &nbsp;BNB
               </Grid>
               <Grid item sx={{ fontSize: "1rem" }}>
-                ≙ USDT
+                {`≙ ${usFormatterSix.format(
+                  current_price *
+                    ((userInfo?.key / gameInfo?.total_key) * gameInfo.share)
+                )} USDT`}
               </Grid>
             </Grid>
           </Grid>

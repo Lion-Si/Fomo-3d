@@ -89,29 +89,12 @@ const Vault = (props) => {
       type: "SET_USER_INFO",
       data: {
         ...userInfo,
+        referral_return: parseInt(user_info.invIncome) / 10 ** 18,
         claimed_return: parseInt(user_info.claimed) / 10 ** 18,
         total_return: parseInt(total_return) / 10 ** 18,
         key: parseInt(yourkey),
       },
     });
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      getBnbPrice();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const getBnbPrice = () => {
-    // Fetch(`/api/v3/ticker/price?symbol=BNBUSDT`, {
-    //   method: "GET",
-    // })
-    //   .then((res) => {
-    //     console.log(res);
-    //     setBnbPrice(res?.price);
-    //   })
-    //   .catch((error) => {});
   };
 
   return (

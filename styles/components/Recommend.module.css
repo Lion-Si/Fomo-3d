@@ -34,6 +34,7 @@
     background-color: #FD02EF;
     display: flex;
     align-items: flex-start;
+    text-transform: capitalize;
 }
 
 .btnGold:hover,

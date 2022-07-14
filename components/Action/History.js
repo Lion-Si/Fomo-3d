@@ -75,6 +75,7 @@ const History = (props) => {
       type: "SET_USER_INFO",
       data: {
         ...userInfo,
+        referral_return: parseInt(user_info.invIncome) / 10 ** 18,
         claimed_return: parseInt(user_info.claimed) / 10 ** 18,
         total_return: parseInt(total_return) / 10 ** 18,
         key: parseInt(yourkey),

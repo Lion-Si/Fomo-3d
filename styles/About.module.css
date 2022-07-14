@@ -4,7 +4,7 @@
 
 .main {
   min-height: 100vh;
-  padding: 4.25rem 0;
+  padding: 6.5rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -49,6 +49,15 @@
   flex-grow: 1;
 }
 
+.subtitle {
+  color: #fafafa;
+  margin: 0;
+  padding: 1rem 0 0.5rem 0;
+  line-height: 1.15;
+  font-size: 3rem;
+  font-family: Comic Sans MS;
+}
+
 .title a {
   color: #0070f3;
   text-decoration: none;
@@ -63,7 +72,7 @@
 .title {
   color: #fafafa;
   margin: 0;
-  padding: 5rem 0 0.5rem 0;
+  padding: 1rem 0 0.5rem 0;
   line-height: 1.15;
   font-size: 4rem;
 }
