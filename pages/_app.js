@@ -52,19 +52,19 @@ const MyApp = (props) => {
               name="viewport"
               content="initial-scale=1, width=device-width"
             />
+            {/* <Script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></Script> */}
           </Head>
           <Script
-            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"
-          ></Script>
+              src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+              integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+              crossorigin="anonymous"
+            ></Script>
           <Script
-            src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"
-            integrity="sha512-oMd9Re3VgJcXuZJn9DN6X7S7JUc7xLYZ2UyZ85Mm/xzaW3lwBr4fV2zjuu/n5jY/Of/2JOx35CTa6zvQNxb31Q=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-          ></Script>
-          {/* <Script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></Script> */}
+              src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"
+              integrity="sha512-oMd9Re3VgJcXuZJn9DN6X7S7JUc7xLYZ2UyZ85Mm/xzaW3lwBr4fV2zjuu/n5jY/Of/2JOx35CTa6zvQNxb31Q=="
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer"
+            ></Script>
           <ThemeProvider theme={theme}>
             <Provider store={store}>
               <CssBaseline />

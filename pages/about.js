@@ -270,7 +270,7 @@ const About = (props) => {
                   indicatorColor="transparent"
                 >
                   <Tab
-                    label="Purchase"
+                    label="Bets"
                     sx={{
                       color: "white",
                       "&:hover": {

@@ -12,14 +12,18 @@ import {
   Tooltip,
 } from "@mui/material";
 import Bnb from "../../public/assets/bnb.png";
+import Logo from "../../public/assets/logo2.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import DescriptionIcon from "@mui/icons-material/Description";
 import KeyIcon from "@mui/icons-material/KeyOutlined";
 import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
 import Link from "next/link";
+import Image from "next/image";
 
 import { switch_to_bsc, fresh_key_return } from "../../src/utils/Common";
 import styles from "../../styles/components/Header.module.css";
@@ -28,6 +32,9 @@ import ABI from "../../public/abi.json";
 const pages = ["about", "Pricing", "Blog"];
 
 const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
+const usFormatterSix = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 6,
+});
 
 const ResponsiveAppBar = (props) => {
   // 获取中央仓库中的数据(需要的时候在引入)
@@ -131,9 +138,8 @@ const ResponsiveAppBar = (props) => {
         sx={{ maxWidth: { lg: "80%", md: "90%", sm: "100%", xs: "100%" } }}
       >
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
-            variant="h6"
+            variant="h5"
             noWrap
             component="a"
             href="/"
@@ -146,7 +152,7 @@ const ResponsiveAppBar = (props) => {
               textDecoration: "none",
             }}
           >
-            Fomo3D
+            <img src={Logo?.src} style={{ height: "1rem" }} alt="" />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -182,37 +188,40 @@ const ResponsiveAppBar = (props) => {
                 },
               }}
             >
-              <Button onClick={handleCloseNavMenu} className={styles.hideBtn}>
-                <LinkOutlinedIcon style={{ transform: "rotate(135deg)" }} />
-                <span>购买推广链接</span>
+              <Button className={styles.hideBtn}>
+                <Link
+                  className={styles.hideBtn}
+                  href={{
+                    pathname: "/about",
+                    query: { way: "invite" },
+                  }}
+                >
+                  <div style={{ display: "flex" }}>
+                    <LinkOutlinedIcon style={{ transform: "rotate(135deg)" }} />
+                    <span>Referral Program</span>
+                  </div>
+                </Link>
               </Button>
               <Button
-                href={`https://t.me/suohame`}
+                href={`https://twitter.com/Exit_Scamming/about`}
                 onClick={handleCloseNavMenu}
                 className={styles.hideBtn}
               >
-                <TelegramIcon />
+                <TwitterIcon />
               </Button>
               <Button
                 href={`https://testnet.bscscan.com/address/${Address}`}
                 onClick={handleCloseNavMenu}
                 className={styles.hideBtn}
               >
-                {"合约"}
+                {"contract"}
               </Button>
               <Button
-                href={`https://fomo3d.hostedwiki.co/`}
-                onClick={handleCloseNavMenu}
+                sx={{ width: "100%" }}
                 className={styles.hideBtn}
-              >
-                {"Help"}
-              </Button>
-              <Button
-                href={`https://cobo.com/`}
                 onClick={handleCloseNavMenu}
-                className={styles.hideBtn}
               >
-                {"Cobo"}
+                {"White Paper"}
               </Button>
             </Menu>
           </Box>
@@ -231,7 +240,7 @@ const ResponsiveAppBar = (props) => {
             <div readOnly={true} onClick={handleCloseNavMenu}>
               <img src={Bnb?.src} style={{ height: "1rem" }} alt="" />
               &nbsp;
-              <span>{gameInfo?.bnb || "00"}</span>
+              <span>{usFormatterSix.format(gameInfo?.bnb) || "00"}</span>
             </div>
             {/* <Button
               href={`/about`}
@@ -240,17 +249,28 @@ const ResponsiveAppBar = (props) => {
             >
               {"About"}
             </Button> */}
-            <Button>
+            <Button className={styles.btn}>
               <Link
-                className={styles.btn}
                 href={{
                   pathname: "/about",
                   query: { way: "invite" },
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    cursor: "pointer",
+                    justifyContent: "center",
+                  }}
+                >
                   <LinkOutlinedIcon style={{ transform: "rotate(135deg)" }} />
-                  <span>Referral Program</span>
+                  <Typography
+                    sx={{
+                      display: { md: "none", lg: "flex" },
+                      color: "white",
+                    }}
+                  >
+                    Referral Program
+                  </Typography>
                 </div>
               </Link>
             </Button>
@@ -262,13 +282,30 @@ const ResponsiveAppBar = (props) => {
               <TwitterIcon />
             </Button>
             <Button
+              href={`https://github.com/Exit_Scamming/about`}
+              onClick={handleCloseNavMenu}
+              className={styles.btn}
+            >
+              <GitHubIcon />
+            </Button>
+            <Button
               href={`https://testnet.bscscan.com/address/${Address}`}
               onClick={handleCloseNavMenu}
               className={styles.btn}
             >
               {"contract"}
             </Button>
-            <a className={styles.btn}>{"White Paper"}</a>
+            <a className={styles.btn}>
+              <Typography
+                sx={{
+                  display: { md: "none", lg: "flex" },
+                  color: "white",
+                }}
+              >
+                WhitePaper
+              </Typography>
+              <DescriptionIcon sx={{ display: { md: "flex", lg: "none" } }} />
+            </a>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Button

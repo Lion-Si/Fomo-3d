@@ -61,12 +61,20 @@ const Vault = (props) => {
     }
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fresh_key_return();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
   const fresh_key_return = async () => {
     const web3 = new Web3(window.ethereum);
     let myContract = new web3.eth.Contract(ABI, Address);
     let addr = await ethereum.request({ method: "eth_requestAccounts" });
     let game_round = await myContract.methods.GameRound().call();
     let user_info = await myContract.methods.UserInfo(addr[0]).call();
+    console.log(user_info);
     let yourkey = await myContract.methods.UserKey(game_round, addr[0]).call();
     if (user_info.hasInvite == true) {
       dispatch({
