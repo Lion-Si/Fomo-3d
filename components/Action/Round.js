@@ -75,23 +75,18 @@ const Round = (props) => {
       <Grid container>
         <Typography className={styles.thin}>Round #{gameInfo.round}</Typography>
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
-        <Grid
-          item
-          sx={{ width: "100%", textAlign: "center", marginBottom: "1rem" }}
-        >
-          奖池中有这么多BNB，你 还在等什么？
-        </Grid>
-        <Button
-          className={`${styles.btnGold} ${styles.btnSize}`}
-          sx={{
-            marginBottom: "40px",
+        <div
+          className={`${styles.btnSize}`}
+          style={{
+            marginBottom: "1.5rem",
           }}
-          onClick={buy}
         >
-          Round will drain in
-          <KeyIcon style={{ transform: "rotate(135deg)" }} />
-        </Button>
-        <span>Remaining time ： {roundTime || "00:00:00"}</span>
+          {/* <KeyIcon style={{ transform: "rotate(135deg)" }} /> */}
+          Round will drain in{" "}
+          <span className={styles.glow} style={{ fontSize: "2rem" }}>
+            {roundTime || "00:00:00"}
+          </span>
+        </div>
         <Grid container className={styles.showInfo}>
           <Grid
             item
@@ -156,16 +151,23 @@ const Round = (props) => {
               <Grid item className={styles.small}>
                 <span className={styles.glow}>
                   {usFormatterSix.format(
-                    (userInfo?.key / gameInfo?.total_key) * gameInfo.share
+                    gameInfo.share
+                      ? (userInfo?.key / gameInfo?.total_key) * gameInfo.share
+                      : "0"
                   )}
                 </span>
                 &nbsp;BNB
               </Grid>
               <Grid item sx={{ fontSize: "1rem" }}>
-                {`≙ ${usFormatterSix.format(
-                  current_price *
-                    ((userInfo?.key / gameInfo?.total_key) * gameInfo.share)
-                )} USDT`}
+                {`≙ ${
+                  current_price
+                    ? usFormatterSix.format(
+                        current_price *
+                          ((userInfo?.key / gameInfo?.total_key) *
+                            gameInfo.share)
+                      )
+                    : "0"
+                } USDT`}
               </Grid>
             </Grid>
           </Grid>

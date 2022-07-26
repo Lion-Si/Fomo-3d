@@ -54,7 +54,7 @@
   margin: 0;
   padding: 1rem 0 0.5rem 0;
   line-height: 1.15;
-  font-size: 3rem;
+  font-size: 2rem;
   font-family: Comic Sans MS;
 }
 
@@ -93,8 +93,7 @@
   border-radius: 5px;
   padding: 0.75rem;
   font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+  font-family: Comic Sans MS;
 }
 
 .grid {
@@ -147,6 +146,14 @@
 
 .tabBox .tab {
   padding: 20px 15px;
+}
+
+.time {
+  margin-top: 1.125rem;
+  margin-bottom: 2.25rem;
+  font-size: 3rem;
+  color: #eaeaea;
+  font-family: Comic Sans MS;
 }
 
 .text {

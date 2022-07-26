@@ -1,6 +1,7 @@
 .thin {
     font-size: 1.25rem;
     font-weight: 300;
+    font-family:Comic Sans MS;
 }
 
 .showInfo {
@@ -9,7 +10,7 @@
     color: #F8F9FC;
     padding: 0.875rem;
     width: 100%;
-    font-family: Poppins;
+    font-family: Comic Sans MS;
     background-color: #24262E;
     border-top: 1px solid #1d2024;
     border-bottom: 1px solid #676b70;
@@ -29,6 +30,7 @@
 
 .showInfo .btn {
     text-transform: capitalize;
+    font-family:Comic Sans MS;
     color: white;
     display: block;
     min-width: 100%;

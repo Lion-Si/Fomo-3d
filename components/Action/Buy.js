@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import SavingsIcon from "@mui/icons-material/Savings";
 
-import { AccountCircle, Scale } from "@mui/icons-material";
 import Bnb from "../../public/assets/bnb.png";
 import Bear from "../../public/assets/tbear.png";
 import Bull from "../../public/assets/tbull.png";
@@ -47,11 +46,39 @@ const radio_data = [
   },
 ];
 
+const change_data = [
+  {
+    name: "Stepm",
+    src: Snek,
+    description: "Trickle down Divinomics",
+  },
+  {
+    name: "Runa",
+    src: Whale,
+    description: "Feed on greed of others",
+  },
+  {
+    name: "BAZC",
+    src: Bull,
+    description: "Break upwards, never stagnate",
+  },
+  {
+    name: "Bxie",
+    src: Bear,
+    description: "Stand alone, fight alone",
+  },
+];
+
+const usFormatterSix = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 6,
+});
+
 const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
 
 const Buy = (props) => {
   // 获取中央仓库中的数据(需要的时候在引入)
   const { code } = props;
+  const status = useSelector((state) => state.scamming_status);
   const userInfo = useSelector((state) => state.userInfo);
   const gameInfo = useSelector((state) => state.gameInfo);
   const roundTime = useSelector((state) => state.round_time);
@@ -166,7 +193,8 @@ const Buy = (props) => {
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
         <Grid item sx={{ width: "100%", textAlign: "center" }}>
           Purchase keys to receive dividends from the following bets. Last
-          bettor will win all BNB in pot.
+          bettor will win all BNB in pot{" "}
+          {`(${usFormatterSix.format(gameInfo.total_pot)} BNB)`}.
         </Grid>
         <Box sx={{ height: "1rem", width: "100%" }}></Box>
         <Box
@@ -247,29 +275,50 @@ const Buy = (props) => {
           <ToggleButtonGroup
             color="primary"
             value={alignment}
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", fontFamily: "Comic Sans MS" }}
             exclusive
             onChange={handleChange}
           >
-            <ToggleButton value="1" sx={{ width: "30%" }}>
-              +1 keys
+            <ToggleButton
+              value="1"
+              sx={{ width: "24%", fontFamily: "Comic Sans MS" }}
+            >
+              CAll
             </ToggleButton>
-            <ToggleButton value="2" sx={{ width: "30%" }}>
-              +2 keys
+            <ToggleButton
+              value="2"
+              sx={{ width: "24%", fontFamily: "Comic Sans MS" }}
+            >
+              2X raise
             </ToggleButton>
-            <ToggleButton value="3" sx={{ width: "11%" }}>
-              +<br />3
+            <ToggleButton
+              value="3"
+              sx={{ width: "11%", fontFamily: "Comic Sans MS" }}
+            >
+              3<br />x
             </ToggleButton>
-            <ToggleButton value="5" sx={{ width: "11%" }}>
-              +<br />5
+            <ToggleButton
+              value="4"
+              sx={{ width: "11%", fontFamily: "Comic Sans MS" }}
+            >
+              4<br />x
             </ToggleButton>
-            <ToggleButton value="10" sx={{ width: "11%" }}>
-              +<br />
+            <ToggleButton
+              value="5"
+              sx={{ width: "11%", fontFamily: "Comic Sans MS" }}
+            >
+              5<br />x
+            </ToggleButton>
+            <ToggleButton
+              value="10"
+              sx={{ width: "11%", fontFamily: "Comic Sans MS" }}
+            >
               10
+              <br />x
             </ToggleButton>
-            <ToggleButton value="20">
-              +<br />
+            <ToggleButton value="20" sx={{ fontFamily: "Comic Sans MS" }}>
               20
+              <br />x
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
@@ -289,24 +338,27 @@ const Buy = (props) => {
           </Grid>
           <Grid item align="center" lg={5.5} md={5.5} sm={5.5} xs={5.5}>
             <Button
-              className={`${styles.btnGold} ${styles.btnSize}`}
+              className={`${styles.vault} ${styles.btnSize}`}
               onClick={props.changeToVault}
             >
               <SavingsIcon />
-              Use vault
+              My Vault
             </Button>
           </Grid>
           <p lg={12} md={12} sm={12} xs={12} className={styles.text}>
-            Each bet have 10% chance to win 3% of the pot
+            Each bet have 10% chance to win 3% of the pot{" "}
+            {`(${usFormatterSix.format(gameInfo.total_pot)} BNB)`}.
           </p>
         </Grid>
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
-        <Typography>{"Choose Your Team"}</Typography>
+        <Typography sx={{ fontFamily: "Comic Sans MS" }}>
+          {"Choose Your Team"}
+        </Typography>
         <Grid
           container
           sx={{ justifyContent: "space-between", paddingTop: "1rem" }}
         >
-          {radio_data.map((item, index) => {
+          {(status ? change_data : radio_data).map((item, index) => {
             return (
               <Grid
                 item

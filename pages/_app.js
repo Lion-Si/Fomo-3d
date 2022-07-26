@@ -12,6 +12,7 @@ import "../styles/globals.css";
 import Script from "next/script";
 import Header from "../components/Header/Header";
 import Loader from "../components/Loading/Loader";
+import Footer from "../components/Footer/Footer";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -70,6 +71,7 @@ const MyApp = (props) => {
               <CssBaseline />
               <Header />
               <Component {...pageProps} />
+              <Footer />
             </Provider>
           </ThemeProvider>
         </CacheProvider>

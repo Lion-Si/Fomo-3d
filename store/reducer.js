@@ -4,6 +4,7 @@ const initState = {
   user_address: "",
   invite_code: "",
   round_time: "",
+  scamming_status: false,
   gameInfo: {
     current_winner: "",
     round: 0,
@@ -62,6 +63,11 @@ export const reducer = (state = initState, action) => {
       return {
         ...state,
         current_price: data,
+      };
+    case "SET_SCAMMING_STATUS":
+      return {
+        ...state,
+        scamming_status: data,
       };
     default:
       return initState;

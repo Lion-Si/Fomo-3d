@@ -17,6 +17,7 @@ function* mySaga() {
   yield takeEvery("SET_USER_INFO", showSaga);
   yield takeEvery("SET_GAME_INFO", showSaga);
   yield takeEvery("SET_CURRENT_PRICE", showSaga);
+  yield takeEvery("SET_SCAMMING_STATUS", showSaga);
 }
 
 export default mySaga;

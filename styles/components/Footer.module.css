@@ -1,0 +1,8 @@
+.appBar {
+    flex-grow: 1;
+    align-items: center
+}
+
+.copyright {
+    color: white;
+}

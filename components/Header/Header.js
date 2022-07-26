@@ -12,7 +12,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import Bnb from "../../public/assets/bnb.png";
-import Logo from "../../public/assets/logo2.png";
+import Logo from "../../public/assets/logo1.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
@@ -119,13 +119,14 @@ const ResponsiveAppBar = (props) => {
           total_return += (round_info.bnb * keys_) / round_info.keys;
         }
       }
+      console.log(typeof total_return);
       dispatch({
         type: "SET_USER_INFO",
         data: {
           ...userInfo,
           referral_return: parseInt(user_info.invIncome) / 10 ** 18,
           claimed_return: parseInt(user_info.claimed) / 10 ** 18,
-          total_return: parseInt(total_return) / 10 ** 18,
+          total_return: parseInt(total_return),
           key: parseInt(yourkey),
         },
       });
@@ -152,7 +153,7 @@ const ResponsiveAppBar = (props) => {
               textDecoration: "none",
             }}
           >
-            <img src={Logo?.src} style={{ height: "1rem" }} alt="" />
+            <img src={Logo?.src} style={{ width: "4rem" }} alt="" />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -267,6 +268,7 @@ const ResponsiveAppBar = (props) => {
                     sx={{
                       display: { md: "none", lg: "flex" },
                       color: "white",
+                      fontFamily: "Comic Sans MS",
                     }}
                   >
                     Referral Program
@@ -300,6 +302,7 @@ const ResponsiveAppBar = (props) => {
                 sx={{
                   display: { md: "none", lg: "flex" },
                   color: "white",
+                  fontFamily: "Comic Sans MS",
                 }}
               >
                 WhitePaper
@@ -312,11 +315,15 @@ const ResponsiveAppBar = (props) => {
               id="connect"
               type="button"
               onClick={login}
-              className={styles.hideBtn}
+              className={styles.btnGold}
             >
-              connect wallet
+              connect
             </Button>
           </Box>
+          <Button
+            href="/admin"
+            style={{ backgroundColor: "transparent" }}
+          ></Button>
         </Toolbar>
       </Container>
     </AppBar>

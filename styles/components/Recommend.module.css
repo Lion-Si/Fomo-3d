@@ -1,6 +1,7 @@
 .thin {
     font-size: 1.25rem;
     font-weight: 300;
+    font-family:Comic Sans MS;
 }
 
 .showInfo {
@@ -9,7 +10,7 @@
     color: #F8F9FC;
     padding: 0.875rem;
     width: 100%;
-    font-family: Poppins;
+    font-family: Comic Sans MS;
     background-color: #24262E;
     border-top: 1px solid #1d2024;
     border-bottom: 1px solid #676b70;
@@ -26,6 +27,7 @@
     font-size: 1.25rem;
     line-height: 1.5;
     border-radius: .3rem;
+    font-family:Comic Sans MS;
 }
 
 .btnGold {
@@ -35,6 +37,7 @@
     display: flex;
     align-items: flex-start;
     text-transform: capitalize;
+    font-family:Comic Sans MS;
 }
 
 .btnGold:hover,

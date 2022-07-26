@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Grid, Box, Typography, Button } from "@mui/material";
 import KeyIcon from "@mui/icons-material/Key";
@@ -20,23 +20,9 @@ const History = (props) => {
   const [count, setCount] = useState(1);
   const [type, setType] = useState(1);
 
-  const buy = async () => {
-    if (window.ethereum) {
-      let addr = await ethereum.request({ method: "eth_requestAccounts" });
-      if (ethereum.networkVersion != "97") {
-        await switch_to_bsc();
-        return;
-      }
-      const web3 = new Web3(window.ethereum);
-      let myContract = new web3.eth.Contract(ABI, Address);
-      await myContract.methods
-        .BuyKey(type, count)
-        .send({ from: addr[0], value: 2 * 10 ** 15 });
-      await fresh_key_return();
-    } else {
-      alert("please install MetaMask");
-    }
-  };
+  useEffect(() => {
+    getWinHistory();
+  }, []);
 
   const getWinHistory = async () => {
     let winHistoryList = [];
@@ -92,6 +78,7 @@ const History = (props) => {
           className={`${styles.btnGold} ${styles.btnSize}`}
           sx={{
             marginBottom: "40px",
+            fontFamily: "Comic Sans MS",
           }}
           onClick={getWinHistory}
         >

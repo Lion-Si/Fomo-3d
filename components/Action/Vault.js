@@ -108,7 +108,7 @@ const Vault = (props) => {
   return (
     <Box sx={{ p: 1 }}>
       <Grid container>
-        <Typography className={styles.thin}>{"金库"}</Typography>
+        <Typography className={styles.thin}>{"Vault"}</Typography>
         <Box sx={{ height: "2rem", width: "100%" }}></Box>
         <Grid container className={styles.showInfo}>
           <Grid
@@ -151,7 +151,9 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.text}
           >
-            {userInfo.claimed_return} BNB
+            {userInfo.claimed_return &&
+              usFormatterSix.format(userInfo.claimed_return)}{" "}
+            BNB
           </Grid>
           <Grid
             item
@@ -172,7 +174,7 @@ const Vault = (props) => {
             xs={5.5}
             className={styles.text}
           >
-            {userInfo?.referral_return} BNB
+            {usFormatterSix.format(userInfo?.referral_return)} BNB
           </Grid>
           <Box sx={{ height: "2rem", width: "100%" }}></Box>
           <Grid
@@ -194,11 +196,11 @@ const Vault = (props) => {
             xs={5.5}
             className={`${styles.text} ${styles.glow}`}
           >
-            {userInfo.total_return} BNB
+            {usFormatterSix.format(userInfo.total_return)} BNB
           </Grid>
 
           <Button className={styles.btn} onClick={settle}>
-            Confirm
+            Claim
           </Button>
           <Button className={styles.btn} onClick={claim}>
             Withdraw

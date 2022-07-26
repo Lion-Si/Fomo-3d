@@ -121,14 +121,22 @@ const About = (props) => {
   }, []);
 
   const getBnbPrice = async () => {
-    const res = await fetch(
-      "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT"
-    );
-    const json = await res.json();
-    dispatch({
-      type: "SET_CURRENT_PRICE",
-      data: json.price,
-    });
+    try {
+      const res = await fetch(
+        "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT"
+      );
+      if (res.status === 200) {
+        const json = await res.json();
+        dispatch({
+          type: "SET_CURRENT_PRICE",
+          data: json.price,
+        });
+      } else {
+        alert("请求异常");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const changeToVault = () => {
@@ -144,41 +152,46 @@ const About = (props) => {
   };
 
   const fresh_base_info = async () => {
-    const web3 = new Web3(window.ethereum);
-    let myContract = new web3.eth.Contract(ABI, Address);
-    let game_round = await myContract.methods.GameRound().call();
-    let round_info = await myContract.methods.RoundInfo(game_round).call();
-    let cur_key = await myContract.methods.CurrentKeyNum().call();
-    dispatch({
-      type: "SET_GAME_INFO",
-      data: {
-        ...gameInfo,
-        round: parseInt(game_round),
-        total_pot: parseInt(round_info.bnb) / 10 ** 18,
-        bnb: parseInt(round_info.pot) / 10 ** 18,
-        total_key: parseInt(round_info.keys),
-        key: parseInt(cur_key),
-        current_winner: round_info.plyr,
-        share: parseInt(round_info.share) / 10 ** 18,
-      },
-    });
-    var now = new Date();
-    if (round_info.end > now / 1000) {
-      let rest_time = round_info.end - now / 1000;
-      let h = parseInt(rest_time / 3600);
-      let m = parseInt((rest_time - 3600 * h) / 60);
-      let s = parseInt(rest_time - 3600 * h - 60 * m);
+    try {
+      const web3 = new Web3(window.ethereum);
+      // const web3 = new Web3(new Web3.providers.HttpProvider('https://data-seed-prebsc-1-s1.binance.org:8545'))
+      let myContract = new web3.eth.Contract(ABI, Address);
+      let game_round = await myContract.methods.GameRound().call();
+      let round_info = await myContract.methods.RoundInfo(game_round).call();
+      let cur_key = await myContract.methods.CurrentKeyNum().call();
       dispatch({
-        type: "SET_ROUND_TIME",
-        data: `${h.toString().padStart(2, "0")}:${m
-          .toString()
-          .padStart(2, "0")}:${s.toString().padStart(2, "0")}`,
+        type: "SET_GAME_INFO",
+        data: {
+          ...gameInfo,
+          round: parseInt(game_round),
+          total_pot: parseInt(round_info.bnb) / 10 ** 18,
+          bnb: parseInt(round_info.pot) / 10 ** 18,
+          total_key: parseInt(round_info.keys),
+          key: parseInt(cur_key),
+          current_winner: round_info.plyr,
+          share: parseInt(round_info.share) / 10 ** 18,
+        },
       });
-    } else {
-      dispatch({
-        type: "SET_ROUND_TIME",
-        data: `00:00:00`,
-      });
+      var now = new Date();
+      if (round_info.end > now / 1000) {
+        let rest_time = round_info.end - now / 1000;
+        let h = parseInt(rest_time / 3600);
+        let m = parseInt((rest_time - 3600 * h) / 60);
+        let s = parseInt(rest_time - 3600 * h - 60 * m);
+        dispatch({
+          type: "SET_ROUND_TIME",
+          data: `${h.toString().padStart(2, "0")}:${m
+            .toString()
+            .padStart(2, "0")}:${s.toString().padStart(2, "0")}`,
+        });
+      } else {
+        dispatch({
+          type: "SET_ROUND_TIME",
+          data: `00:00:00`,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -225,8 +238,8 @@ const About = (props) => {
                 )}
             </a>
           </div>
-          <div className={styles.text}>
-            <span>{roundTime || "00:00:00"}</span>
+          <div className={styles.time}>
+            <span>in {roundTime || "00:00:00"}</span>
           </div>
           <Button className={`${styles.btnGold} ${styles.btnSize}`}>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -273,6 +286,7 @@ const About = (props) => {
                     label="Bets"
                     sx={{
                       color: "white",
+                      fontFamily: "Comic Sans MS",
                       "&:hover": {
                         backgroundColor: "#2d3238",
                         textShadow:
@@ -285,6 +299,7 @@ const About = (props) => {
                     label="Vault"
                     sx={{
                       color: "white",
+                      fontFamily: "Comic Sans MS",
                       "&:hover": {
                         backgroundColor: "#2d3238",
                         textShadow:
@@ -297,6 +312,7 @@ const About = (props) => {
                     label="Referral Program"
                     sx={{
                       color: "white",
+                      fontFamily: "Comic Sans MS",
                       "&:hover": {
                         backgroundColor: "#2d3238",
                         textShadow:
@@ -346,18 +362,13 @@ const About = (props) => {
                 >
                   <Tab
                     label="Round"
-                    sx={{ color: "white" }}
+                    sx={{ color: "white", fontFamily: "Comic Sans MS" }}
                     {...secondProps(0)}
                   />
                   <Tab
-                    label="Teams"
-                    sx={{ color: "white" }}
-                    {...secondProps(1)}
-                  />
-                  <Tab
                     label="Last Winners"
-                    sx={{ color: "white" }}
-                    {...secondProps(2)}
+                    sx={{ color: "white", fontFamily: "Comic Sans MS" }}
+                    {...secondProps(1)}
                   />
                 </Tabs>
               </Box>
@@ -365,9 +376,6 @@ const About = (props) => {
                 <Round />
               </TabPanel>
               <TabPanel value={recordValue} index={1}>
-                暂无
-              </TabPanel>
-              <TabPanel value={recordValue} index={2}>
                 <History />
               </TabPanel>
             </Grid>

@@ -39,7 +39,7 @@ const Recommend = (props) => {
 
   useEffect(() => {
     if (code) {
-      setInviteCode(code)
+      setInviteCode(code);
     }
   }, []);
 
@@ -109,7 +109,7 @@ const Recommend = (props) => {
     return (
       <Fragment>
         <Grid item className={styles.item}>
-          您还没有推广码，申请一个 ：
+          Set your own referral code ：
           <input
             id="code"
             name="code"
@@ -127,7 +127,7 @@ const Recommend = (props) => {
         </Grid>
         <Button className={styles.btnGold} onClick={apply}>
           <CheckIcon />
-          Generate a Referral Code
+          Generate a Referral Code for Free
         </Button>
       </Fragment>
     );

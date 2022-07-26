@@ -5,11 +5,23 @@ body {
   font-family: Comic Sans MS;
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-bottom: .5rem;
   font-weight: 500;
   line-height: 1.2;
   color: inherit;
+  font-family: Comic Sans MS
 }
 
 p {
@@ -40,8 +52,10 @@ p {
 a {
   color: inherit;
   text-decoration: none;
+  font-family: Comic Sans MS;
 }
 
 * {
+  font-family: Comic Sans MS;
   box-sizing: border-box;
 }
