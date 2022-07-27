@@ -18,6 +18,11 @@ import Bear from "../../public/assets/tbear.png";
 import Bull from "../../public/assets/tbull.png";
 import Snek from "../../public/assets/tsnek.png";
 import Whale from "../../public/assets/twhale.png";
+
+import Stepm from "../../public/assets/Stepm.png";
+import Runa from "../../public/assets/Runa.png";
+import Bixe from "../../public/assets/Bixe.png";
+import Ape from "../../public/assets/Ape.png";
 import styles from "../../styles/components/Buy.module.css";
 
 import { switch_to_bsc } from "../../src/utils/Common";
@@ -49,22 +54,22 @@ const radio_data = [
 const change_data = [
   {
     name: "Stepm",
-    src: Snek,
+    src: Stepm,
     description: "Trickle down Divinomics",
   },
   {
     name: "Runa",
-    src: Whale,
+    src: Runa,
     description: "Feed on greed of others",
   },
   {
     name: "BAZC",
-    src: Bull,
+    src: Ape,
     description: "Break upwards, never stagnate",
   },
   {
-    name: "Bxie",
-    src: Bear,
+    name: "Bixe",
+    src: Bixe,
     description: "Stand alone, fight alone",
   },
 ];
@@ -87,6 +92,7 @@ const Buy = (props) => {
 
   const [count, setCount] = useState(1);
   const [type, setType] = useState(0);
+  const [currentKey, setCurrentKey] = useState(0);
   const [currentBnb, setCurrentBnb] = useState(0);
   const [alignment, setAlignment] = useState("1");
   const [inviteCode, setInviteCode] = useState("");
@@ -118,8 +124,9 @@ const Buy = (props) => {
     if (window.ethereum) {
       const web3 = new Web3(window.ethereum);
       let myContract = new web3.eth.Contract(ABI, Address);
-      console.log(await myContract.methods.CurrentFomoPrice().call());
+      console.log(await myContract.methods.CurrentKeyNum().call());
       setCurrentBnb(await myContract.methods.CurrentFomoPrice().call());
+      setCurrentKey(await myContract.methods.CurrentKeyNum().call());
     }
   };
 
@@ -169,7 +176,8 @@ const Buy = (props) => {
           continue;
         }
         let keys_ = await myContract.methods.UserKey(i, addr[0]).call();
-        total_return += (round_info.bnb * keys_) / round_info.keys;
+        total_return +=
+          ((round_info.share / 10 ** 18) * keys_) / round_info.keys;
       }
     }
     dispatch({
@@ -208,9 +216,9 @@ const Buy = (props) => {
         >
           <TextField
             variant="standard"
-            value={`${alignment} keys`}
+            value={`${roundTime === "00:00:00" ? 300 : currentKey} keys`}
             fullWidth
-            readonly
+            readOnly
             id="fullWidth"
             onChange={handleChangeCount}
             InputProps={{

@@ -86,11 +86,13 @@ const Vault = (props) => {
     if (user_info.setRnd != game_round) {
       for (var i = user_info.setRnd; i <= game_round; i++) {
         let round_info = await myContract.methods.RoundInfo(i).call();
+        console.log(round_info);
         if (round_info.keys == 0) {
           continue;
         }
         let keys_ = await myContract.methods.UserKey(i, addr[0]).call();
-        total_return += (round_info.bnb * keys_) / round_info.keys;
+        total_return +=
+          ((round_info.share / 10 ** 18) * keys_) / round_info.keys;
       }
     }
     dispatch({

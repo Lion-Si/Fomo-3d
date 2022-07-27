@@ -322,7 +322,12 @@ const ResponsiveAppBar = (props) => {
           </Box>
           <Button
             href="/admin"
-            style={{ backgroundColor: "transparent" }}
+            style={{
+              backgroundColor: "transparent",
+              position: "absolute",
+              right: "-65px",
+              top: 0,
+            }}
           ></Button>
         </Toolbar>
       </Container>

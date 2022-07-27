@@ -69,9 +69,9 @@ const About = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       fresh_base_info();
-      if (roundTime === "00:00:00") {
-        clearInterval(interval);
-      }
+      // if (roundTime === "00:00:00") {
+      //   clearInterval(interval);
+      // }
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -153,8 +153,8 @@ const About = (props) => {
 
   const fresh_base_info = async () => {
     try {
-      const web3 = new Web3(window.ethereum);
-      // const web3 = new Web3(new Web3.providers.HttpProvider('https://data-seed-prebsc-1-s1.binance.org:8545'))
+      // const web3 = new Web3(window.ethereum);
+      const web3 = new Web3(new Web3.providers.HttpProvider('https://data-seed-prebsc-1-s1.binance.org:8545'))
       let myContract = new web3.eth.Contract(ABI, Address);
       let game_round = await myContract.methods.GameRound().call();
       let round_info = await myContract.methods.RoundInfo(game_round).call();
