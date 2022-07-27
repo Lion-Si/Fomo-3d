@@ -9,6 +9,7 @@ import { switch_to_bsc } from "../../src/utils/Common";
 import ABI from "../../public/abi.json";
 
 const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
+const Url = "https://data-seed-prebsc-1-s1.binance.org:8545";
 const usFormatterSix = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 6,
 });
@@ -26,7 +27,7 @@ const History = (props) => {
 
   const getWinHistory = async () => {
     let winHistoryList = [];
-    const web3 = new Web3(window.ethereum);
+    const web3 = new Web3(new Web3.providers.HttpProvider(Url))
     let myContract = new web3.eth.Contract(ABI, Address);
     let game_round = await myContract.methods.GameRound().call();
     for (let i = 1; i < parseInt(game_round) + 1; i++) {

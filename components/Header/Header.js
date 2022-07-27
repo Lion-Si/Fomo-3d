@@ -32,6 +32,7 @@ import ABI from "../../public/abi.json";
 const pages = ["about", "Pricing", "Blog"];
 
 const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
+const Url = "https://data-seed-prebsc-1-s1.binance.org:8545";
 const usFormatterSix = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 6,
 });
@@ -48,14 +49,11 @@ const ResponsiveAppBar = (props) => {
   const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = useState(null);
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("isConnect")) {
-  //     console.log("当前登录？", isConnect, localStorage.getItem("isConnect"));
-  //     if (typeof Web3 !== undefined) {
-  //       login();
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (localStorage.getItem("isConnect")) {
+      login();
+    }
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -94,7 +92,7 @@ const ResponsiveAppBar = (props) => {
   const fresh_key_return = async () => {
     console.log(typeof Web3);
     if (typeof Web3 !== undefined && window.ethereum) {
-      const web3 = new Web3(window.ethereum);
+      const web3 = new Web3(new Web3.providers.HttpProvider(Url));
       let myContract = new web3.eth.Contract(ABI, Address);
       let addr = await ethereum.request({ method: "eth_requestAccounts" });
       let game_round = await myContract.methods.GameRound().call();

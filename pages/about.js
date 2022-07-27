@@ -46,6 +46,7 @@ const secondProps = (index) => {
 };
 
 const Address = "0x9B66816Bb69a17aCDeD442522d8495DFf01497C1";
+const Url = "https://data-seed-prebsc-1-s1.binance.org:8545";
 
 // const SmoothScroll = dynamic(() => import("smooth-scroll"), {
 //   ssr: false,
@@ -154,7 +155,7 @@ const About = (props) => {
   const fresh_base_info = async () => {
     try {
       // const web3 = new Web3(window.ethereum);
-      const web3 = new Web3(new Web3.providers.HttpProvider('https://data-seed-prebsc-1-s1.binance.org:8545'))
+      const web3 = new Web3(new Web3.providers.HttpProvider(Url));
       let myContract = new web3.eth.Contract(ABI, Address);
       let game_round = await myContract.methods.GameRound().call();
       let round_info = await myContract.methods.RoundInfo(game_round).call();
